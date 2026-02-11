@@ -21,6 +21,7 @@ scale = Vector2(10.161, 8.304)
 texture = SubResource("AtlasTexture_bgk1r")
 
 [node name="Card_Spell" parent="." instance=ExtResource("2_yj2vr")]
+SpellType = "heal"
 TargetQubits = "101"
 CardName = "curacion"
 CardDescription = "restaura hasta la mitad de barra total"

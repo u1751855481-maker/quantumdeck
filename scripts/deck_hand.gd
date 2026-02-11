@@ -20,6 +20,7 @@ var CurrentSlot: CardSlot
 var PHASE : String = "USUAL_DRAW"
 var WORLD: String = "USUAL"
 var SetTokenArea:int = 1
+var IsGameOver: bool = false
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	PlayerHand.add_card(CardSpell1Scene.instantiate())
@@ -29,6 +30,7 @@ func _ready() -> void:
 	PlayerBoard.set_quantic_only(false)
 	visualize_elements(PHASE)
 	set_world(WORLD)
+	$GameOverLayer.visible = false
 	pass # Replace with function body.
 func visualize_elements(phase:String):
 	if(PHASE=="USUAL_DRAW"):
@@ -119,24 +121,44 @@ func _on_button_5_pressed():
 	#PlayerTokenArea.randomize_tokens()
 
 func get_card_accuracy():
-	var accuracy = 1
-	var damage = 1
+	var damage = 0
+	var heal = 0
 	for slot in PlayerBoard.get_card_slots():
 		if(slot.get_card_inside()):
 			var card = slot.get_card_inside()
-			var card_target = card.get_target_qubits()
-			for i in QuanticPlayerBoard.get_result().size():
-				if(QuanticPlayerBoard.get_result()[i] == card_target[i]):
-					accuracy = accuracy + 1
-			if(accuracy==2):
-				damage = damage + card.get_max_damage() * 0.25
-			if(accuracy==3):
-				damage = damage + card.get_max_damage() * 0.5
-			if(accuracy == 4):
-				damage = damage + card.get_max_damage()
+			var card_power = get_card_power(card)
+			if(card.is_heal_spell()):
+				heal = heal + card_power
+			else:
+				damage = damage + card_power
 	WORLD = "USUAL"
 	set_world(WORLD)
-	BattleManagerAux.resolve_player_attack(damage)
+	if(heal > 0):
+		show_combat_text("Heal +" + str(heal), Color(0.65, 1.0, 0.65, 1.0))
+		BattleManagerAux.resolve_player_heal(heal)
+	if(damage > 0):
+		show_combat_text("Ataque -" + str(damage), Color(1, 0.55, 0.45, 1))
+		BattleManagerAux.resolve_player_attack(damage)
+	elif(heal > 0):
+		resolve_enemy_attack()
+
+func get_card_power(card: CardSpell) -> int:
+	var accuracy = 1
+	var card_target = card.get_target_qubits()
+	for i in QuanticPlayerBoard.get_result().size():
+		if(QuanticPlayerBoard.get_result()[i] == card_target[i]):
+			accuracy = accuracy + 1
+	if(accuracy == 2):
+		return int(card.get_max_damage() * 0.25)
+	if(accuracy == 3):
+		return int(card.get_max_damage() * 0.5)
+	if(accuracy >= 4):
+		return int(card.get_max_damage())
+	return 1
+
+func show_combat_text(text:String, color:Color = Color(1,1,1,1)):
+	$CombatLog.text = text
+	$CombatLog.modulate = color
 func resolve_enemy_attack():
 	BattleManagerAux.resolve_enemy_attack()
 func set_token_area():
@@ -224,14 +246,33 @@ func _on_battle_manager_player_attacked():
 	resolve_enemy_attack()
 	pass # Replace with function body.
 
+func _on_battle_manager_player_healed(heal_amount: int):
+	show_combat_text("Curación aplicada: +" + str(heal_amount), Color(0.65, 1.0, 0.65, 1.0))
+
 func _on_battle_manager_enemy_attacked():
 	PHASE = "USUAL_DRAW"
 	PlayerBoard.clear_cards()
+	show_combat_text("El enemigo ataca", Color(1, 0.75, 0.75, 1))
 	visualize_elements(PHASE)
 	pass # Replace with function body.
 
 func _on_battle_manager_enemy_defeated():
 	PHASE = "USUAL_DRAW"
 	PlayerBoard.clear_cards()
+	show_combat_text("¡Enemigo derrotado!", Color(1, 0.95, 0.55, 1))
 	visualize_elements(PHASE)
 	pass # Replace with function body.
+
+func _on_battle_manager_player_defeated(final_score: int):
+	if(IsGameOver):
+		return
+	IsGameOver = true
+	show_combat_text("Derrota", Color(1, 0.5, 0.5, 1))
+	$GameOverLayer/Panel/FinalScore.text = "Score: " + str(final_score)
+	$GameOverLayer.visible = true
+	PlayerHand.CanInteract = false
+	QuanticPlayerHand.CanInteract = false
+	hide_all_buttons()
+
+func _on_restart_button_pressed():
+	get_tree().reload_current_scene()

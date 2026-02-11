@@ -18,6 +18,11 @@ func heal(heal:int):
 		Health = MaxHealth
 	else:
 		Health = Health + heal
+
+func play_heal_feedback():
+	modulate = Color(0.65, 1.0, 0.65, 1.0)
+	var heal_tween = get_tree().create_tween()
+	heal_tween.tween_property(self, "modulate", Color(1, 1, 1, 1), 0.25)
 func damage(p_dmg:int):
 	Health = Health - p_dmg
 	if(Health<0):

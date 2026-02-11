@@ -4,6 +4,7 @@ class_name CardSpell extends Card
 @onready var CardTargetValueLabel: Label = $Target_value_text
 
 @export var TargetQubits: String
+@export_enum("damage", "heal") var SpellType: String = "damage"
 
 var MaxDamage
 
@@ -55,3 +56,9 @@ func get_max_damage():
 	return MaxDamage
 func get_target_qubits():
 	return TargetQubits
+
+func get_spell_type():
+	return SpellType
+
+func is_heal_spell() -> bool:
+	return SpellType == "heal"

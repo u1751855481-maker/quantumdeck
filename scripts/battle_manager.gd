@@ -3,6 +3,8 @@ class_name BattleManager extends Node2D
 signal player_attacked
 signal enemy_attacked
 signal enemy_defeated
+signal player_healed(heal_amount: int)
+signal player_defeated(final_score: int)
 @onready var EnemyScene: PackedScene = preload("res://scenes/enemy.tscn")
 @onready var PlayerAux:Player = $Player
 @onready var EnemyAux:Enemy = $Enemy
@@ -10,6 +12,7 @@ signal enemy_defeated
 
 var p_dmg
 var e_dmg
+var p_heal
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -23,6 +26,12 @@ func _process(delta: float) -> void:
 func resolve_player_attack(dmg:int):
 	p_dmg = dmg
 	PlayerAux.play_attack_anim()
+
+func resolve_player_heal(heal_amount:int):
+	p_heal = heal_amount
+	PlayerAux.heal(heal_amount)
+	PlayerAux.play_heal_feedback()
+	player_healed.emit(heal_amount)
 	
 func resolve_enemy_attack():
 	if(EnemyAux.Health>0):
@@ -39,6 +48,8 @@ func _on_player_player_attacked():
 
 func _on_enemy_enemy_attacked() -> void:
 	PlayerAux.damage(e_dmg)
+	if(PlayerAux.Health <= 0):
+		player_defeated.emit(ScoreAux.score)
 	enemy_attacked.emit()
 	pass
 

@@ -144,16 +144,19 @@ func get_card_accuracy():
 
 func get_card_power(card: CardSpell) -> int:
 	var accuracy = 1
-	var card_target = card.get_target_qubits()
-	for i in QuanticPlayerBoard.get_result().size():
-		if(QuanticPlayerBoard.get_result()[i] == card_target[i]):
+	var card_target: String = str(card.get_target_qubits())
+	var board_result: Array = QuanticPlayerBoard.get_result()
+	var compare_length = mini(board_result.size(), card_target.length())
+	for i in compare_length:
+		if(str(board_result[i]) == card_target.substr(i, 1)):
 			accuracy = accuracy + 1
+	var base_power = card.get_base_power()
 	if(accuracy == 2):
-		return int(card.get_max_damage() * 0.25)
+		return int(base_power * 0.25)
 	if(accuracy == 3):
-		return int(card.get_max_damage() * 0.5)
+		return int(base_power * 0.5)
 	if(accuracy >= 4):
-		return int(card.get_max_damage())
+		return int(base_power)
 	return 1
 
 func show_combat_text(text:String, color:Color = Color(1,1,1,1)):
@@ -212,16 +215,13 @@ func highlight_target_rows(slot: CardSlot):
 	QuanticPlayerBoard.highlight_target_rows(slot)
 	
 func set_world(WORLD):
-	if(WORLD=="USUAL"):
-		$CanvasLayer/Quantic_World.visible = false
-		$CanvasLayer/Quantic_World.set_process(false)
-		$CanvasLayer/World/Hand_Spells.visible = true
-		$CanvasLayer/World/Hand_Spells.set_process(true)
-	else:
-		$CanvasLayer/Quantic_World.visible = true
-		$CanvasLayer/Quantic_World.set_process(true)
-		$CanvasLayer/World/Hand_Spells.visible = false
-		$CanvasLayer/World/Hand_Spells.set_process(false)
+	var is_usual_world = WORLD == "USUAL"
+	$CanvasLayer/Quantic_World.visible = !is_usual_world
+	$CanvasLayer/Quantic_World.set_process(!is_usual_world)
+	$CanvasLayer/World/Hand_Spells.visible = is_usual_world
+	$CanvasLayer/World/Hand_Spells.set_process(is_usual_world)
+	$Battle_Manager/Player.visible = is_usual_world
+	$Battle_Manager/Enemy.visible = is_usual_world
 
 
 

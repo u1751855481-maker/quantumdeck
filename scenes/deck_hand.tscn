@@ -1,0 +1,300 @@
+[gd_scene load_steps=24 format=3 uid="uid://dvmafqbag38bf"]
+
+[ext_resource type="Script" uid="uid://dp0i007rk2d8" path="res://scripts/deck_hand.gd" id="1_brxfj"]
+[ext_resource type="PackedScene" uid="uid://cyd45ay7r1wy7" path="res://scenes/hand.tscn" id="2_ojtlx"]
+[ext_resource type="PackedScene" uid="uid://f7nwohml702j" path="res://scenes/board_spells.tscn" id="4_s1lvx"]
+[ext_resource type="Script" uid="uid://ds5v6mycalafj" path="res://scenes/score.gd" id="5_4yrbx"]
+[ext_resource type="Script" uid="uid://dcf06e4woqgib" path="res://scripts/battle_manager.gd" id="5_lq05f"]
+[ext_resource type="PackedScene" uid="uid://bamuxd0bs28q2" path="res://scenes/enemy.tscn" id="5_npc56"]
+[ext_resource type="Texture2D" uid="uid://ch4nbav34mm7t" path="res://Assets/buttonsui.png" id="5_o728e"]
+[ext_resource type="PackedScene" uid="uid://ciqyumajhxmeb" path="res://scenes/player.tscn" id="6_lq05f"]
+[ext_resource type="PackedScene" uid="uid://cl2ryl7uujfgn" path="res://scenes/board.tscn" id="6_npc56"]
+[ext_resource type="Texture2D" uid="uid://t7fmy6djxobo" path="res://Assets/Base_card.png" id="7_btnn"]
+[ext_resource type="Texture2D" uid="uid://dcd1fca6spyyb" path="res://Assets/pixelCardAssest.png" id="8_btnh"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5upqq"]
+atlas = ExtResource("5_o728e")
+region = Rect2(129, 64, 62, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pffkj"]
+atlas = ExtResource("5_o728e")
+region = Rect2(193, 65, 62, 31)
+
+[sub_resource type="LabelSettings" id="LabelSettings_4m3u8"]
+font_size = 20
+font_color = Color(0, 0, 0, 1)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o728e"]
+atlas = ExtResource("5_o728e")
+region = Rect2(129, 64, 62, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4m3u8"]
+atlas = ExtResource("5_o728e")
+region = Rect2(193, 64, 62, 32)
+
+[sub_resource type="LabelSettings" id="LabelSettings_fi2e6"]
+font_size = 20
+font_color = Color(0, 0, 0, 1)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fi2e6"]
+atlas = ExtResource("5_o728e")
+region = Rect2(129, 64, 62, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_54kgh"]
+atlas = ExtResource("5_o728e")
+region = Rect2(194, 64, 61, 32)
+
+[sub_resource type="LabelSettings" id="LabelSettings_wgsrr"]
+font_size = 20
+font_color = Color(0, 0, 0, 1)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rkq1t"]
+atlas = ExtResource("5_o728e")
+region = Rect2(129, 64, 62, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_67oyj"]
+atlas = ExtResource("5_o728e")
+region = Rect2(192, 64, 63, 32)
+
+[sub_resource type="LabelSettings" id="LabelSettings_tu452"]
+font_size = 20
+font_color = Color(0, 0, 0, 1)
+
+[node name="Deck_Hand" type="Node2D"]
+script = ExtResource("1_brxfj")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Quantic_World" type="Node2D" parent="CanvasLayer"]
+visible = false
+
+[node name="Hand" parent="CanvasLayer/Quantic_World" instance=ExtResource("2_ojtlx")]
+position = Vector2(960, 1911)
+AngleLimit = 20.0
+
+[node name="Board" parent="CanvasLayer/Quantic_World" instance=ExtResource("6_npc56")]
+
+[node name="World" type="Node2D" parent="CanvasLayer"]
+
+[node name="Hand_Spells" parent="CanvasLayer/World" instance=ExtResource("2_ojtlx")]
+position = Vector2(960, 1911)
+
+[node name="Board_Spells" parent="CanvasLayer/World" instance=ExtResource("4_s1lvx")]
+
+[node name="Button" type="TextureButton" parent="."]
+visible = false
+offset_left = 1586.0
+offset_top = 640.0
+offset_right = 1791.0
+offset_bottom = 720.0
+texture_normal = SubResource("AtlasTexture_5upqq")
+texture_hover = SubResource("AtlasTexture_pffkj")
+ignore_texture_size = true
+stretch_mode = 0
+metadata/_edit_use_anchors_ = true
+
+[node name="Label" type="Label" parent="Button"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -16.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "DRAW CARD"
+label_settings = SubResource("LabelSettings_4m3u8")
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Button2" type="TextureButton" parent="."]
+visible = false
+offset_left = 1586.0
+offset_top = 640.0
+offset_right = 1791.0
+offset_bottom = 720.0
+texture_normal = ExtResource("7_btnn")
+texture_hover = ExtResource("8_btnh")
+ignore_texture_size = true
+stretch_mode = 0
+metadata/_edit_use_anchors_ = true
+
+[node name="Label" type="Label" parent="Button2"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "End card turn"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Button3" type="TextureButton" parent="."]
+visible = false
+offset_left = 1586.0
+offset_top = 640.0
+offset_right = 1791.0
+offset_bottom = 720.0
+texture_normal = SubResource("AtlasTexture_o728e")
+texture_hover = SubResource("AtlasTexture_4m3u8")
+ignore_texture_size = true
+stretch_mode = 0
+metadata/_edit_use_anchors_ = true
+
+[node name="Label" type="Label" parent="Button3"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -16.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "DRAW CARD"
+label_settings = SubResource("LabelSettings_fi2e6")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Button4" type="TextureButton" parent="."]
+visible = false
+offset_left = 1586.0
+offset_top = 640.0
+offset_right = 1791.0
+offset_bottom = 720.0
+texture_normal = SubResource("AtlasTexture_fi2e6")
+texture_hover = SubResource("AtlasTexture_54kgh")
+ignore_texture_size = true
+stretch_mode = 0
+metadata/_edit_use_anchors_ = true
+
+[node name="Label" type="Label" parent="Button4"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -16.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "RESOLVE"
+label_settings = SubResource("LabelSettings_wgsrr")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Button5" type="TextureButton" parent="."]
+visible = false
+offset_left = 1586.0
+offset_top = 640.0
+offset_right = 1791.0
+offset_bottom = 720.0
+texture_normal = SubResource("AtlasTexture_rkq1t")
+texture_hover = SubResource("AtlasTexture_67oyj")
+ignore_texture_size = true
+stretch_mode = 0
+metadata/_edit_use_anchors_ = true
+
+[node name="Label" type="Label" parent="Button5"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -16.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "MEASURE"
+label_settings = SubResource("LabelSettings_tu452")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CombatLog" type="Label" parent="."]
+offset_left = 631.0
+offset_top = 53.0
+offset_right = 1294.0
+offset_bottom = 114.0
+theme_override_font_sizes/font_size = 30
+horizontal_alignment = 1
+
+[node name="GameOverLayer" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="Panel" type="Panel" parent="GameOverLayer"]
+offset_left = 654.0
+offset_top = 290.0
+offset_right = 1266.0
+offset_bottom = 782.0
+
+[node name="Title" type="Label" parent="GameOverLayer/Panel"]
+layout_mode = 0
+offset_left = 175.0
+offset_top = 52.0
+offset_right = 424.0
+offset_bottom = 95.0
+theme_override_font_sizes/font_size = 36
+text = "Derrota"
+horizontal_alignment = 1
+
+[node name="FinalScore" type="Label" parent="GameOverLayer/Panel"]
+layout_mode = 0
+offset_left = 180.0
+offset_top = 210.0
+offset_right = 431.0
+offset_bottom = 250.0
+theme_override_font_sizes/font_size = 30
+text = "Score: 0"
+horizontal_alignment = 1
+
+[node name="RestartButton" type="Button" parent="GameOverLayer/Panel"]
+layout_mode = 0
+offset_left = 230.0
+offset_top = 363.0
+offset_right = 379.0
+offset_bottom = 403.0
+text = "Volver al menú"
+
+[node name="Battle_Manager" type="Node2D" parent="."]
+script = ExtResource("5_lq05f")
+
+[node name="Enemy" parent="Battle_Manager" instance=ExtResource("5_npc56")]
+position = Vector2(1395, 653)
+
+[node name="Player" parent="Battle_Manager" instance=ExtResource("6_lq05f")]
+position = Vector2(403, 653)
+
+[node name="Score" type="Node2D" parent="Battle_Manager"]
+script = ExtResource("5_4yrbx")
+
+[node name="Label" type="Label" parent="Battle_Manager/Score"]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Enemigos derrotados: "
+
+[node name="LabelScore" type="Label" parent="Battle_Manager/Score"]
+offset_left = 173.0
+offset_right = 213.0
+offset_bottom = 23.0
+text = "0"
+
+[connection signal="card_entered_slot" from="CanvasLayer/Quantic_World/Hand" to="." method="_on_hand_card_entered_slot"]
+[connection signal="card_exited_slot" from="CanvasLayer/Quantic_World/Hand" to="." method="_on_hand_card_exited_slot"]
+[connection signal="click_card" from="CanvasLayer/Quantic_World/Hand" to="." method="_on_hand_click_card"]
+[connection signal="release_card" from="CanvasLayer/Quantic_World/Hand" to="." method="_on_hand_release_card"]
+[connection signal="click_slot" from="CanvasLayer/Quantic_World/Board" to="." method="_on_board_click_slot"]
+[connection signal="click_card" from="CanvasLayer/World/Hand_Spells" to="." method="_on_hand_spells_click_card"]
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="Button2" to="." method="_on_button_2_pressed"]
+[connection signal="pressed" from="Button3" to="." method="_on_button_3_pressed"]
+[connection signal="pressed" from="Button4" to="." method="_on_button_4_pressed"]
+[connection signal="pressed" from="Button5" to="." method="_on_button_5_pressed"]
+[connection signal="pressed" from="GameOverLayer/Panel/RestartButton" to="." method="_on_restart_button_pressed"]
+[connection signal="enemy_attacked" from="Battle_Manager" to="." method="_on_battle_manager_enemy_attacked"]
+[connection signal="enemy_defeated" from="Battle_Manager" to="." method="_on_battle_manager_enemy_defeated"]
+[connection signal="player_attacked" from="Battle_Manager" to="." method="_on_battle_manager_player_attacked"]
+[connection signal="player_defeated" from="Battle_Manager" to="." method="_on_battle_manager_player_defeated"]
+[connection signal="player_healed" from="Battle_Manager" to="." method="_on_battle_manager_player_healed"]
+[connection signal="Defeated" from="Battle_Manager/Enemy" to="Battle_Manager" method="_on_enemy_defeated"]
+[connection signal="enemy_attacked" from="Battle_Manager/Enemy" to="Battle_Manager" method="_on_enemy_enemy_attacked"]
+[connection signal="player_attacked" from="Battle_Manager/Player" to="Battle_Manager" method="_on_player_player_attacked"]

@@ -1,0 +1,29 @@
+[gd_scene load_steps=6 format=3 uid="uid://duginqd6vrix2"]
+
+[ext_resource type="Script" uid="uid://t2lgr0v1apjn" path="res://scripts/card_slot.gd" id="1_mxh2e"]
+[ext_resource type="Script" uid="uid://bih8l45a3ept8" path="res://scripts/card_slot_area.gd" id="2_cypty"]
+[ext_resource type="Texture2D" uid="uid://cks6jt4o2afjy" path="res://Assets/slot.png" id="3_hrxt0"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dwl65"]
+atlas = ExtResource("3_hrxt0")
+region = Rect2(76, 0, 76, 103)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cypty"]
+
+[node name="Card_Slot" type="Node2D"]
+script = ExtResource("1_mxh2e")
+
+[node name="Card_Slot_Area" type="Area2D" parent="."]
+script = ExtResource("2_cypty")
+
+[node name="Sprite2D" type="Sprite2D" parent="Card_Slot_Area"]
+scale = Vector2(2, 2)
+texture = SubResource("AtlasTexture_dwl65")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Card_Slot_Area"]
+scale = Vector2(2.0799994, 2.12)
+shape = SubResource("RectangleShape2D_cypty")
+debug_color = Color(0, 0.6, 0.7019608, 0.41960785)
+
+[connection signal="mouse_entered" from="Card_Slot_Area" to="." method="_on_card_slot_area_mouse_entered"]
+[connection signal="mouse_exited" from="Card_Slot_Area" to="." method="_on_card_slot_area_mouse_exited"]

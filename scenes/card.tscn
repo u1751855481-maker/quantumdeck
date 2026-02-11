@@ -1,0 +1,109 @@
+[gd_scene load_steps=12 format=3 uid="uid://da1ls8j6x744h"]
+
+[ext_resource type="Script" uid="uid://bxakviv45hl5f" path="res://scripts/card.gd" id="1_6u4wf"]
+[ext_resource type="Texture2D" uid="uid://fk64d6vbje7f" path="res://Assets/card_sheet.png" id="2_kg30u"]
+[ext_resource type="FontFile" uid="uid://bdvuker3x5jgx" path="res://Assets/minami.ttf" id="3_ktuci"]
+[ext_resource type="Script" uid="uid://bf8qcbcg2tw16" path="res://scripts/card_area.gd" id="4_kg30u"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6ligt"]
+atlas = ExtResource("2_kg30u")
+region = Rect2(532, 0, 76, 103)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ktuci"]
+atlas = ExtResource("2_kg30u")
+region = Rect2(308, 210, 68, 95)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kg30u"]
+atlas = ExtResource("2_kg30u")
+region = Rect2(539, 164, 62, 36)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sy11y"]
+atlas = ExtResource("2_kg30u")
+region = Rect2(538, 109, 64, 49)
+
+[sub_resource type="LabelSettings" id="LabelSettings_sy11y"]
+font = ExtResource("3_ktuci")
+font_size = 10
+font_color = Color(0.101960786, 0.101960786, 0.101960786, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_ktuci"]
+font = ExtResource("3_ktuci")
+font_size = 10
+font_color = Color(0.101960786, 0.101960786, 0.101960786, 1)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6u4wf"]
+size = Vector2(149, 203)
+
+[node name="Card" type="Node2D"]
+script = ExtResource("1_6u4wf")
+
+[node name="Base_border" type="Sprite2D" parent="."]
+z_index = 1
+scale = Vector2(2, 2)
+texture = SubResource("AtlasTexture_6ligt")
+
+[node name="Base" type="Sprite2D" parent="."]
+z_index = 1
+texture_filter = 1
+scale = Vector2(2, 2)
+texture = SubResource("AtlasTexture_ktuci")
+
+[node name="Base_name" type="Sprite2D" parent="."]
+z_index = 1
+position = Vector2(0, 55)
+scale = Vector2(2, 2)
+texture = SubResource("AtlasTexture_kg30u")
+
+[node name="Base_frame" type="Sprite2D" parent="."]
+z_index = 1
+y_sort_enabled = true
+position = Vector2(0, -42)
+scale = Vector2(2, 2)
+texture = SubResource("AtlasTexture_sy11y")
+
+[node name="Card_name" type="Node2D" parent="."]
+position = Vector2(-20, -7.5)
+
+[node name="Card_name" type="Label" parent="Card_name"]
+z_index = 1
+offset_left = -41.0
+offset_top = 16.0
+offset_right = 81.0
+offset_bottom = 28.0
+text = "Card name"
+label_settings = SubResource("LabelSettings_sy11y")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+uppercase = true
+metadata/_edit_use_anchors_ = true
+
+[node name="Card_description" type="Node2D" parent="."]
+position = Vector2(-51, 28)
+
+[node name="Card_description" type="Label" parent="Card_description"]
+z_index = 1
+offset_left = -2.5000017
+offset_top = -1.4999994
+offset_right = 112.65056
+offset_bottom = 60.702538
+scale = Vector2(0.9335605, 0.9404762)
+text = "Card description"
+label_settings = SubResource("LabelSettings_ktuci")
+autowrap_mode = 2
+uppercase = true
+metadata/_edit_use_anchors_ = true
+
+[node name="Card_Area" type="Area2D" parent="."]
+script = ExtResource("4_kg30u")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Card_Area"]
+z_index = 1
+position = Vector2(0.5, 0.5)
+shape = SubResource("RectangleShape2D_6u4wf")
+
+[connection signal="area_entered" from="Card_Area" to="." method="_on_card_area_area_entered"]
+[connection signal="area_exited" from="Card_Area" to="." method="_on_card_area_area_exited"]
+[connection signal="input_event" from="Card_Area" to="." method="_on_area_2d_input_event"]
+[connection signal="mouse_entered" from="Card_Area" to="." method="_on_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="Card_Area" to="." method="_on_area_2d_mouse_exited"]

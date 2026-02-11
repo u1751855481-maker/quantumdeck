@@ -11,6 +11,7 @@ region = Rect2(1, 1, 14, 14)
 [node name="Card_Spell_heal" type="Node2D"]
 script = ExtResource("1_84p1r")
 SpellType = "heal"
+HealAmount = 50
 CardName = "curacion"
 CardDescription = "restaura hasta la mitad de barra total"
 
@@ -23,6 +24,7 @@ texture = SubResource("AtlasTexture_bgk1r")
 
 [node name="Card_Spell" parent="." instance=ExtResource("2_yj2vr")]
 SpellType = "heal"
+HealAmount = 50
 TargetQubits = "101"
 CardName = "curacion"
 CardDescription = "restaura hasta la mitad de barra total"

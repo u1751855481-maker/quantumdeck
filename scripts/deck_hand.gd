@@ -121,12 +121,25 @@ func _on_button_5_pressed():
 func get_card_accuracy():
 	var accuracy = 1
 	var damage = 1
+	var board_result_raw: Variant = QuanticPlayerBoard.get_result()
+	var board_result: Array = _normalize_to_array(board_result_raw)
+	if board_result.is_empty():
+		push_warning("get_card_accuracy(): QuanticPlayerBoard.get_result() returned empty or unsupported data")
+		WORLD = "USUAL"
+		set_world(WORLD)
+		BattleManagerAux.resolve_player_attack(damage)
+		return
+
 	for slot in PlayerBoard.get_card_slots():
 		if(slot.get_card_inside()):
 			var card = slot.get_card_inside()
-			var card_target = card.get_target_qubits()
-			for i in QuanticPlayerBoard.get_result().size():
-				if(QuanticPlayerBoard.get_result()[i] == card_target[i]):
+			var card_target: Array = _normalize_to_array(card.get_target_qubits())
+			if card_target.is_empty():
+				continue
+
+			var compare_count := mini(board_result.size(), card_target.size())
+			for i in compare_count:
+				if str(board_result[i]) == str(card_target[i]):
 					accuracy = accuracy + 1
 			if(accuracy==2):
 				damage = damage + card.get_max_damage() * 0.25
@@ -137,6 +150,31 @@ func get_card_accuracy():
 	WORLD = "USUAL"
 	set_world(WORLD)
 	BattleManagerAux.resolve_player_attack(damage)
+
+func _normalize_to_array(value: Variant) -> Array:
+	if value == null:
+		return []
+	if value is Array:
+		return value.duplicate()
+	if value is PackedStringArray:
+		var packed_values: PackedStringArray = value
+		return Array(packed_values)
+	if value is String:
+		var text: String = value.strip_edges()
+		if text.is_empty():
+			return []
+		# Accept separators like "0,1,0" / "0 1 0" / "0|1|0".
+		if text.contains(",") or text.contains("|") or text.contains(" "):
+			var normalized := text.replace("|", ",").replace(" ", ",")
+			var parts := normalized.split(",", false)
+			if !parts.is_empty():
+				return parts
+		# Fallback: treat the string as individual chars ("010" -> ["0", "1", "0"]).
+		var chars: Array = []
+		for c in text:
+			chars.push_back(c)
+		return chars
+	return []
 func resolve_enemy_attack():
 	BattleManagerAux.resolve_enemy_attack()
 func set_token_area():

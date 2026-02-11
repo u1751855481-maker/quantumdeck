@@ -215,16 +215,13 @@ func highlight_target_rows(slot: CardSlot):
 	QuanticPlayerBoard.highlight_target_rows(slot)
 	
 func set_world(WORLD):
-	if(WORLD=="USUAL"):
-		$CanvasLayer/Quantic_World.visible = false
-		$CanvasLayer/Quantic_World.set_process(false)
-		$CanvasLayer/World/Hand_Spells.visible = true
-		$CanvasLayer/World/Hand_Spells.set_process(true)
-	else:
-		$CanvasLayer/Quantic_World.visible = true
-		$CanvasLayer/Quantic_World.set_process(true)
-		$CanvasLayer/World/Hand_Spells.visible = false
-		$CanvasLayer/World/Hand_Spells.set_process(false)
+	var is_usual_world = WORLD == "USUAL"
+	$CanvasLayer/Quantic_World.visible = !is_usual_world
+	$CanvasLayer/Quantic_World.set_process(!is_usual_world)
+	$CanvasLayer/World/Hand_Spells.visible = is_usual_world
+	$CanvasLayer/World/Hand_Spells.set_process(is_usual_world)
+	$Battle_Manager/Player.visible = is_usual_world
+	$Battle_Manager/Enemy.visible = is_usual_world
 
 
 

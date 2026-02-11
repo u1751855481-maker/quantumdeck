@@ -50,6 +50,7 @@ func _on_enemy_enemy_attacked() -> void:
 	PlayerAux.damage(e_dmg)
 	if(PlayerAux.Health <= 0):
 		player_defeated.emit(ScoreAux.score)
+		return
 	enemy_attacked.emit()
 	pass
 

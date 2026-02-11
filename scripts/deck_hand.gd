@@ -21,6 +21,7 @@ var PHASE : String = "USUAL_DRAW"
 var WORLD: String = "USUAL"
 var SetTokenArea:int = 1
 var IsGameOver: bool = false
+var IsMeasureSequenceRunning: bool = false
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	PlayerHand.add_card(CardSpell1Scene.instantiate())
@@ -33,6 +34,11 @@ func _ready() -> void:
 	$GameOverLayer.visible = false
 	pass # Replace with function body.
 func visualize_elements(phase:String):
+	if(IsMeasureSequenceRunning):
+		hide_all_buttons()
+		PlayerHand.CanInteract = false
+		QuanticPlayerHand.CanInteract = false
+		return
 	if(PHASE=="USUAL_DRAW"):
 		hide_all_buttons()
 		$Button.visible = true
@@ -60,6 +66,16 @@ func visualize_elements(phase:String):
 		$Button2.visible = true
 		$Button2.set_process(true)
 	pass
+
+func lock_all_player_input():
+	IsMeasureSequenceRunning = true
+	hide_all_buttons()
+	PlayerHand.CanInteract = false
+	QuanticPlayerHand.CanInteract = false
+
+func unlock_all_player_input():
+	IsMeasureSequenceRunning = false
+
 func hide_all_buttons():
 		$Button.visible = false
 		$Button.set_process(false)
@@ -79,6 +95,8 @@ func _process(delta: float):
 	
 		
 func _on_button_pressed():
+	if(IsMeasureSequenceRunning):
+		return
 	var CardSceneArray = [CardSpell1Scene,CardSpell2Scene]
 	var card1 = CardSceneArray[randi_range(0,CardSceneArray.size()-1)].instantiate()
 	PlayerHand.add_card(card1)
@@ -86,6 +104,8 @@ func _on_button_pressed():
 	visualize_elements(PHASE)
 	
 func _on_button_2_pressed():
+	if(IsMeasureSequenceRunning):
+		return
 	PHASE = "QUANTIC_DRAW"
 	if(SetTokenArea==1):
 		set_token_area()
@@ -99,6 +119,8 @@ func _on_button_2_pressed():
 	visualize_elements(PHASE)
 	
 func _on_button_3_pressed():
+	if(IsMeasureSequenceRunning):
+		return
 	PHASE = "QUANTIC_PLAY"
 	var GateSceneArray = [Card1Scene,Card2Scene
 	#,CardControlledXGateScene,
@@ -110,15 +132,30 @@ func _on_button_3_pressed():
 	visualize_elements(PHASE)
 	
 func _on_button_4_pressed():
+	if(IsMeasureSequenceRunning):
+		return
 	PHASE = "QUANTIC_RESOLVE"
 	QuanticPlayerBoard.resolve_all_rows()
 	visualize_elements(PHASE)
 	
 func _on_button_5_pressed():
+	if(IsMeasureSequenceRunning):
+		return
 	PHASE = "QUANTIC_MEASURE"
-	QuanticPlayerBoard.measure_all_results()
+	lock_all_player_input()
+	await measure_result_tokens_with_flip()
 	get_card_accuracy()
 	#PlayerTokenArea.randomize_tokens()
+
+func measure_result_tokens_with_flip() -> void:
+	var result_area = QuanticPlayerBoard.get_result_area()
+	for i in QuanticPlayerBoard.get_result().size():
+		var token = result_area.get_token_from_index(i)
+		if(token && token.get_value() == "?"):
+			var measured_value = "0"
+			if(randi_range(0,1)==1):
+				measured_value = "1"
+			await token.play_flip_to_value(measured_value)
 
 func get_card_accuracy():
 	var damage = 0
@@ -171,6 +208,8 @@ func set_token_area():
 		#PlayerTokenArea.randomize_tokens()
 		
 func _on_hand_release_card():
+	if(IsMeasureSequenceRunning):
+		return
 	if(CurrentCard):
 		if(CurrentSlot && !CurrentSlot.only_spells && CurrentSlot.CardInside==null && PHASE=="QUANTIC_PLAY"):
 			CurrentCard.unhighlight()
@@ -193,6 +232,8 @@ func _on_hand_release_card():
 	CurrentCard = null
 
 func _on_hand_click_card(card: Card,pos: Vector2):
+	if(IsMeasureSequenceRunning):
+		return
 	CurrentCard = card
 	HandCardTweenPos = pos
 	
@@ -205,6 +246,8 @@ func _on_hand_card_entered_slot(card: Card,card_slot:CardSlot):
 		CurrentSlot = card_slot
 
 func _on_board_click_slot(slot: CardSlot):
+	if(IsMeasureSequenceRunning):
+		return
 	if(PHASE=="CUANTIC_INSERT_OUTPUT"):
 		if(slot.get_highlighted()):
 			slot.set_card_inside(OutputCard)
@@ -226,6 +269,8 @@ func set_world(WORLD):
 
 
 func _on_hand_spells_click_card(card: Card,pos:Vector2):
+	if(IsMeasureSequenceRunning):
+		return
 	if(PlayerBoard.can_insert_card()):
 		PlayerBoard.insert_card(PlayerHand.remove_the_card(card))
 		card.unhighlight()
@@ -250,6 +295,7 @@ func _on_battle_manager_player_healed(heal_amount: int):
 	show_combat_text("Curación aplicada: +" + str(heal_amount), Color(0.65, 1.0, 0.65, 1.0))
 
 func _on_battle_manager_enemy_attacked():
+	unlock_all_player_input()
 	PHASE = "USUAL_DRAW"
 	PlayerBoard.clear_cards()
 	show_combat_text("El enemigo ataca", Color(1, 0.75, 0.75, 1))
@@ -257,6 +303,7 @@ func _on_battle_manager_enemy_attacked():
 	pass # Replace with function body.
 
 func _on_battle_manager_enemy_defeated():
+	unlock_all_player_input()
 	PHASE = "USUAL_DRAW"
 	PlayerBoard.clear_cards()
 	show_combat_text("¡Enemigo derrotado!", Color(1, 0.95, 0.55, 1))
@@ -275,4 +322,5 @@ func _on_battle_manager_player_defeated(final_score: int):
 	hide_all_buttons()
 
 func _on_restart_button_pressed():
+	unlock_all_player_input()
 	get_tree().reload_current_scene()

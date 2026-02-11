@@ -1,9 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://cbec7n612menu"]
+[gd_scene load_steps=2 format=3 uid="uid://cbec7n612menu"]
 
 [ext_resource type="Script" path="res://scripts/main_menu.gd" id="1_menu"]
 [ext_resource type="Texture2D" path="res://Assets/bg.png" id="2_bg"]
-[ext_resource type="Texture2D" path="res://Assets/Base_card.png" id="3_btn"]
-[ext_resource type="Texture2D" path="res://Assets/pixelCardAssest.png" id="4_btn_hover"]
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -37,61 +35,19 @@ grow_vertical = 2
 layout_mode = 2
 theme_override_constants/separation = 24
 
-[node name="StartButton" type="TextureButton" parent="MenuCenter/MenuVBox"]
-custom_minimum_size = Vector2(480, 120)
+[node name="StartButton" type="Button" parent="MenuCenter/MenuVBox"]
+custom_minimum_size = Vector2(480, 72)
 layout_mode = 2
-texture_normal = ExtResource("3_btn")
-texture_hover = ExtResource("4_btn_hover")
-ignore_texture_size = true
-stretch_mode = 0
-
-[node name="Label" type="Label" parent="MenuCenter/MenuVBox/StartButton"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-horizontal_alignment = 1
-vertical_alignment = 1
 text = "Iniciar juego"
 
-[node name="CreditsButton" type="TextureButton" parent="MenuCenter/MenuVBox"]
-custom_minimum_size = Vector2(480, 120)
+[node name="CreditsButton" type="Button" parent="MenuCenter/MenuVBox"]
+custom_minimum_size = Vector2(480, 72)
 layout_mode = 2
-texture_normal = ExtResource("3_btn")
-texture_hover = ExtResource("4_btn_hover")
-ignore_texture_size = true
-stretch_mode = 0
-
-[node name="Label" type="Label" parent="MenuCenter/MenuVBox/CreditsButton"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-horizontal_alignment = 1
-vertical_alignment = 1
 text = "Créditos"
 
-[node name="ExitButton" type="TextureButton" parent="MenuCenter/MenuVBox"]
-custom_minimum_size = Vector2(480, 120)
+[node name="ExitButton" type="Button" parent="MenuCenter/MenuVBox"]
+custom_minimum_size = Vector2(480, 72)
 layout_mode = 2
-texture_normal = ExtResource("3_btn")
-texture_hover = ExtResource("4_btn_hover")
-ignore_texture_size = true
-stretch_mode = 0
-
-[node name="Label" type="Label" parent="MenuCenter/MenuVBox/ExitButton"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-horizontal_alignment = 1
-vertical_alignment = 1
 text = "Salir"
 
 [node name="CreditsPanel" type="PanelContainer" parent="."]
@@ -105,6 +61,16 @@ anchor_bottom = 0.9
 grow_horizontal = 2
 grow_vertical = 2
 
+
+[node name="Overlay" type="ColorRect" parent="CreditsPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.08, 0.08, 0.1, 1)
+
 [node name="MarginContainer" type="MarginContainer" parent="CreditsPanel"]
 layout_mode = 2
 theme_override_constants/margin_left = 20
@@ -114,7 +80,8 @@ theme_override_constants/margin_bottom = 20
 
 [node name="CreditsVBox" type="VBoxContainer" parent="CreditsPanel/MarginContainer"]
 layout_mode = 2
-theme_override_constants/separation = 10
+theme_override_constants/separation = 16
+alignment = 1
 
 [node name="Title" type="Label" parent="CreditsPanel/MarginContainer/CreditsVBox"]
 layout_mode = 2
@@ -126,10 +93,12 @@ layout_mode = 2
 
 [node name="Category" type="Label" parent="CreditsPanel/MarginContainer/CreditsVBox/GameplaySection"]
 layout_mode = 2
+horizontal_alignment = 1
 text = "Diseño de gameplay"
 
 [node name="Names" type="Label" parent="CreditsPanel/MarginContainer/CreditsVBox/GameplaySection"]
 layout_mode = 2
+horizontal_alignment = 1
 text = "Integrante Gameplay"
 
 [node name="QiskitSection" type="VBoxContainer" parent="CreditsPanel/MarginContainer/CreditsVBox"]
@@ -137,10 +106,12 @@ layout_mode = 2
 
 [node name="Category" type="Label" parent="CreditsPanel/MarginContainer/CreditsVBox/QiskitSection"]
 layout_mode = 2
+horizontal_alignment = 1
 text = "Desarrollo de servidor quiskit"
 
 [node name="Names" type="Label" parent="CreditsPanel/MarginContainer/CreditsVBox/QiskitSection"]
 layout_mode = 2
+horizontal_alignment = 1
 text = "Integrante Qiskit"
 
 [node name="MenuSection" type="VBoxContainer" parent="CreditsPanel/MarginContainer/CreditsVBox"]
@@ -148,10 +119,12 @@ layout_mode = 2
 
 [node name="Category" type="Label" parent="CreditsPanel/MarginContainer/CreditsVBox/MenuSection"]
 layout_mode = 2
+horizontal_alignment = 1
 text = "Diseño e implementación de menús"
 
 [node name="Names" type="Label" parent="CreditsPanel/MarginContainer/CreditsVBox/MenuSection"]
 layout_mode = 2
+horizontal_alignment = 1
 text = "Integrante Menús"
 
 [node name="CodeSection" type="VBoxContainer" parent="CreditsPanel/MarginContainer/CreditsVBox"]
@@ -159,10 +132,12 @@ layout_mode = 2
 
 [node name="Category" type="Label" parent="CreditsPanel/MarginContainer/CreditsVBox/CodeSection"]
 layout_mode = 2
+horizontal_alignment = 1
 text = "Desarrollo del código"
 
 [node name="Names" type="Label" parent="CreditsPanel/MarginContainer/CreditsVBox/CodeSection"]
 layout_mode = 2
+horizontal_alignment = 1
 text = "Integrante Código"
 
 [node name="BackButton" type="Button" parent="CreditsPanel/MarginContainer/CreditsVBox"]

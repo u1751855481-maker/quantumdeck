@@ -1,0 +1,117 @@
+[gd_scene load_steps=9 format=3 uid="uid://dvmafqbag38bf"]
+
+[ext_resource type="Script" uid="uid://dp0i007rk2d8" path="res://scripts/deck_hand.gd" id="1_brxfj"]
+[ext_resource type="PackedScene" uid="uid://cyd45ay7r1wy7" path="res://scenes/hand.tscn" id="2_ojtlx"]
+[ext_resource type="PackedScene" uid="uid://f7nwohml702j" path="res://scenes/board_spells.tscn" id="4_s1lvx"]
+[ext_resource type="Script" uid="uid://ds5v6mycalafj" path="res://scenes/score.gd" id="5_4yrbx"]
+[ext_resource type="Script" uid="uid://dcf06e4woqgib" path="res://scripts/battle_manager.gd" id="5_lq05f"]
+[ext_resource type="PackedScene" uid="uid://bamuxd0bs28q2" path="res://scenes/enemy.tscn" id="5_npc56"]
+[ext_resource type="PackedScene" uid="uid://ciqyumajhxmeb" path="res://scenes/player.tscn" id="6_lq05f"]
+[ext_resource type="PackedScene" uid="uid://cl2ryl7uujfgn" path="res://scenes/board.tscn" id="6_npc56"]
+
+[node name="Deck_Hand" type="Node2D"]
+script = ExtResource("1_brxfj")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Quantic_World" type="Node2D" parent="CanvasLayer"]
+visible = false
+
+[node name="Hand" parent="CanvasLayer/Quantic_World" instance=ExtResource("2_ojtlx")]
+position = Vector2(960, 1911)
+AngleLimit = 20.0
+
+[node name="Board" parent="CanvasLayer/Quantic_World" instance=ExtResource("6_npc56")]
+
+[node name="World" type="Node2D" parent="CanvasLayer"]
+
+[node name="Hand_Spells" parent="CanvasLayer/World" instance=ExtResource("2_ojtlx")]
+position = Vector2(960, 1911)
+
+[node name="Board_Spells" parent="CanvasLayer/World" instance=ExtResource("4_s1lvx")]
+
+[node name="Button" type="Button" parent="."]
+visible = false
+offset_left = 1581.0
+offset_top = 664.0
+offset_right = 1671.0
+offset_bottom = 695.0
+text = "Draw Card"
+metadata/_edit_use_anchors_ = true
+
+[node name="Button2" type="Button" parent="."]
+visible = false
+offset_left = 1580.0
+offset_top = 664.0
+offset_right = 1693.0
+offset_bottom = 695.0
+text = "End card turn"
+metadata/_edit_use_anchors_ = true
+
+[node name="Button3" type="Button" parent="."]
+visible = false
+offset_left = 1580.0
+offset_top = 664.0
+offset_right = 1671.0
+offset_bottom = 695.0
+text = "Draw card"
+metadata/_edit_use_anchors_ = true
+
+[node name="Button4" type="Button" parent="."]
+visible = false
+offset_left = 1580.0
+offset_top = 664.0
+offset_right = 1675.0
+offset_bottom = 695.0
+text = "Resolve"
+metadata/_edit_use_anchors_ = true
+
+[node name="Button5" type="Button" parent="."]
+visible = false
+offset_left = 1580.0
+offset_top = 664.0
+offset_right = 1675.0
+offset_bottom = 695.0
+text = "Randomize"
+metadata/_edit_use_anchors_ = true
+
+[node name="Battle_Manager" type="Node2D" parent="."]
+script = ExtResource("5_lq05f")
+
+[node name="Enemy" parent="Battle_Manager" instance=ExtResource("5_npc56")]
+position = Vector2(1395, 653)
+
+[node name="Player" parent="Battle_Manager" instance=ExtResource("6_lq05f")]
+position = Vector2(403, 653)
+
+[node name="Score" type="Node2D" parent="Battle_Manager"]
+script = ExtResource("5_4yrbx")
+
+[node name="Label" type="Label" parent="Battle_Manager/Score"]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Enemigos derrotados: "
+
+[node name="LabelScore" type="Label" parent="Battle_Manager/Score"]
+offset_left = 173.0
+offset_right = 213.0
+offset_bottom = 23.0
+text = "0"
+
+[connection signal="card_entered_slot" from="CanvasLayer/Quantic_World/Hand" to="." method="_on_hand_card_entered_slot"]
+[connection signal="card_exited_slot" from="CanvasLayer/Quantic_World/Hand" to="." method="_on_hand_card_exited_slot"]
+[connection signal="click_card" from="CanvasLayer/Quantic_World/Hand" to="." method="_on_hand_click_card"]
+[connection signal="release_card" from="CanvasLayer/Quantic_World/Hand" to="." method="_on_hand_release_card"]
+[connection signal="click_slot" from="CanvasLayer/Quantic_World/Board" to="." method="_on_board_click_slot"]
+[connection signal="click_card" from="CanvasLayer/World/Hand_Spells" to="." method="_on_hand_spells_click_card"]
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="Button2" to="." method="_on_button_2_pressed"]
+[connection signal="pressed" from="Button3" to="." method="_on_button_3_pressed"]
+[connection signal="pressed" from="Button4" to="." method="_on_button_4_pressed"]
+[connection signal="pressed" from="Button5" to="." method="_on_button_5_pressed"]
+[connection signal="enemy_attacked" from="Battle_Manager" to="." method="_on_battle_manager_enemy_attacked"]
+[connection signal="enemy_defeated" from="Battle_Manager" to="." method="_on_battle_manager_enemy_defeated"]
+[connection signal="player_attacked" from="Battle_Manager" to="." method="_on_battle_manager_player_attacked"]
+[connection signal="Defeated" from="Battle_Manager/Enemy" to="Battle_Manager" method="_on_enemy_defeated"]
+[connection signal="enemy_attacked" from="Battle_Manager/Enemy" to="Battle_Manager" method="_on_enemy_enemy_attacked"]
+[connection signal="player_attacked" from="Battle_Manager/Player" to="Battle_Manager" method="_on_player_player_attacked"]

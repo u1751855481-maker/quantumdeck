@@ -1,0 +1,50 @@
+[gd_scene load_steps=8 format=3 uid="uid://bayaie142pafq"]
+
+[ext_resource type="Script" uid="uid://2yy2ekor7yri" path="res://scripts/token.gd" id="1_20bui"]
+[ext_resource type="Texture2D" uid="uid://cwrmohdpncnj" path="res://Assets/qubit.png" id="2_jds53"]
+[ext_resource type="FontFile" uid="uid://bdvuker3x5jgx" path="res://Assets/minami.ttf" id="3_jds53"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w3ocd"]
+atlas = ExtResource("2_jds53")
+region = Rect2(6, 9, 76, 103)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jds53"]
+atlas = ExtResource("2_jds53")
+region = Rect2(82, 9, 76, 103)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ijof8"]
+atlas = ExtResource("2_jds53")
+region = Rect2(158, 9, 76, 103)
+
+[sub_resource type="LabelSettings" id="LabelSettings_w3ocd"]
+font = ExtResource("3_jds53")
+font_size = 80
+
+[node name="Token" type="Node2D"]
+script = ExtResource("1_20bui")
+
+[node name="Base_1" type="Sprite2D" parent="."]
+visible = false
+scale = Vector2(2, 2)
+texture = SubResource("AtlasTexture_w3ocd")
+
+[node name="Base_2" type="Sprite2D" parent="."]
+visible = false
+scale = Vector2(2, 2)
+texture = SubResource("AtlasTexture_jds53")
+
+[node name="Base_a" type="Sprite2D" parent="."]
+visible = false
+scale = Vector2(2, 2)
+texture = SubResource("AtlasTexture_ijof8")
+
+[node name="Token_value" type="Node2D" parent="."]
+visible = false
+position = Vector2(-16, -38)
+
+[node name="Token_value" type="Label" parent="Token_value"]
+visible = false
+offset_right = 40.0
+offset_bottom = 23.0
+text = "1"
+label_settings = SubResource("LabelSettings_w3ocd")

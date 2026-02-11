@@ -49,3 +49,16 @@ func get_value():
 func _process(delta: float):
 	update_graphics()
 	pass
+
+
+func play_flip_to_value(new_value:String, duration: float = 0.35) -> void:
+	if(new_value != "0" && new_value != "1" && new_value != "?"):
+		return
+	var flip_tween = get_tree().create_tween()
+	flip_tween.tween_property(self, "scale:x", 0.0, duration * 0.5)
+	flip_tween.tween_callback(func():
+		change_value(new_value)
+		update_graphics()
+	)
+	flip_tween.tween_property(self, "scale:x", 1.0, duration * 0.5)
+	await flip_tween.finished

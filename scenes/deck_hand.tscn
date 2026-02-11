@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://dvmafqbag38bf"]
+[gd_scene load_steps=11 format=3 uid="uid://dvmafqbag38bf"]
 
 [ext_resource type="Script" uid="uid://dp0i007rk2d8" path="res://scripts/deck_hand.gd" id="1_brxfj"]
 [ext_resource type="PackedScene" uid="uid://cyd45ay7r1wy7" path="res://scenes/hand.tscn" id="2_ojtlx"]
@@ -8,6 +8,8 @@
 [ext_resource type="PackedScene" uid="uid://bamuxd0bs28q2" path="res://scenes/enemy.tscn" id="5_npc56"]
 [ext_resource type="PackedScene" uid="uid://ciqyumajhxmeb" path="res://scenes/player.tscn" id="6_lq05f"]
 [ext_resource type="PackedScene" uid="uid://cl2ryl7uujfgn" path="res://scenes/board.tscn" id="6_npc56"]
+[ext_resource type="Texture2D" path="res://Assets/Base_card.png" id="7_btnn"]
+[ext_resource type="Texture2D" path="res://Assets/pixelCardAssest.png" id="8_btnh"]
 
 [node name="Deck_Hand" type="Node2D"]
 script = ExtResource("1_brxfj")
@@ -30,50 +32,120 @@ position = Vector2(960, 1911)
 
 [node name="Board_Spells" parent="CanvasLayer/World" instance=ExtResource("4_s1lvx")]
 
-[node name="Button" type="Button" parent="."]
+[node name="Button" type="TextureButton" parent="."]
 visible = false
-offset_left = 1581.0
-offset_top = 664.0
-offset_right = 1671.0
-offset_bottom = 695.0
+offset_left = 1530.0
+offset_top = 640.0
+offset_right = 1735.0
+offset_bottom = 720.0
+texture_normal = ExtResource("7_btnn")
+texture_hover = ExtResource("8_btnh")
+ignore_texture_size = true
+stretch_mode = 0
+metadata/_edit_use_anchors_ = true
+
+[node name="Label" type="Label" parent="Button"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_alignment = 1
+vertical_alignment = 1
 text = "Draw Card"
+
+[node name="Button2" type="TextureButton" parent="."]
+visible = false
+offset_left = 1530.0
+offset_top = 640.0
+offset_right = 1735.0
+offset_bottom = 720.0
+texture_normal = ExtResource("7_btnn")
+texture_hover = ExtResource("8_btnh")
+ignore_texture_size = true
+stretch_mode = 0
 metadata/_edit_use_anchors_ = true
 
-[node name="Button2" type="Button" parent="."]
-visible = false
-offset_left = 1580.0
-offset_top = 664.0
-offset_right = 1693.0
-offset_bottom = 695.0
+[node name="Label" type="Label" parent="Button2"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_alignment = 1
+vertical_alignment = 1
 text = "End card turn"
+
+[node name="Button3" type="TextureButton" parent="."]
+visible = false
+offset_left = 1530.0
+offset_top = 640.0
+offset_right = 1735.0
+offset_bottom = 720.0
+texture_normal = ExtResource("7_btnn")
+texture_hover = ExtResource("8_btnh")
+ignore_texture_size = true
+stretch_mode = 0
 metadata/_edit_use_anchors_ = true
 
-[node name="Button3" type="Button" parent="."]
-visible = false
-offset_left = 1580.0
-offset_top = 664.0
-offset_right = 1671.0
-offset_bottom = 695.0
+[node name="Label" type="Label" parent="Button3"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_alignment = 1
+vertical_alignment = 1
 text = "Draw card"
+
+[node name="Button4" type="TextureButton" parent="."]
+visible = false
+offset_left = 1530.0
+offset_top = 640.0
+offset_right = 1735.0
+offset_bottom = 720.0
+texture_normal = ExtResource("7_btnn")
+texture_hover = ExtResource("8_btnh")
+ignore_texture_size = true
+stretch_mode = 0
 metadata/_edit_use_anchors_ = true
 
-[node name="Button4" type="Button" parent="."]
-visible = false
-offset_left = 1580.0
-offset_top = 664.0
-offset_right = 1675.0
-offset_bottom = 695.0
+[node name="Label" type="Label" parent="Button4"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_alignment = 1
+vertical_alignment = 1
 text = "Resolve"
+
+[node name="Button5" type="TextureButton" parent="."]
+visible = false
+offset_left = 1530.0
+offset_top = 640.0
+offset_right = 1735.0
+offset_bottom = 720.0
+texture_normal = ExtResource("7_btnn")
+texture_hover = ExtResource("8_btnh")
+ignore_texture_size = true
+stretch_mode = 0
 metadata/_edit_use_anchors_ = true
 
-[node name="Button5" type="Button" parent="."]
-visible = false
-offset_left = 1580.0
-offset_top = 664.0
-offset_right = 1675.0
-offset_bottom = 695.0
+[node name="Label" type="Label" parent="Button5"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_alignment = 1
+vertical_alignment = 1
 text = "Randomize"
-metadata/_edit_use_anchors_ = true
 
 [node name="CombatLog" type="Label" parent="."]
 offset_left = 631.0

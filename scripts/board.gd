@@ -33,6 +33,9 @@ func handle_click_slot_row(slot:CardSlot):
 	
 func get_token_area():
 	return TokenAreaAux
+
+func get_result_area() -> ResultArea:
+	return ResultAreaAux
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:

@@ -5,8 +5,8 @@ class_name CardSpell extends Card
 
 @export var TargetQubits: String
 @export_enum("damage", "heal") var SpellType: String = "damage"
-
-var MaxDamage
+@export var MaxDamage: int = 0
+@export var HealAmount: int = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -54,6 +54,15 @@ func _on_card_card_exited_slot(card: Card, card_slot: CardSlot):
 	card_exited_slot.emit(self,card_slot)
 func get_max_damage():
 	return MaxDamage
+
+func get_heal_amount() -> int:
+	return HealAmount
+
+func get_base_power() -> int:
+	if is_heal_spell():
+		return HealAmount
+	return MaxDamage
+
 func get_target_qubits():
 	return TargetQubits
 

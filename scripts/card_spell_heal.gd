@@ -3,7 +3,7 @@ extends CardSpell
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	$Card_Spell.MaxDamage = 50
+	$Card_Spell.HealAmount = 50
 	pass # Replace with function body.
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -21,6 +21,9 @@ func get_current_size():
 	return($Card_Spell.get_current_size())
 func get_max_damage():
 	return $Card_Spell.get_max_damage()
+func get_base_power() -> int:
+	return $Card_Spell.get_base_power()
+
 func set_animation_pos(pos:Vector2):
 	$Card_Spell.set_animation_pos(pos)
 	

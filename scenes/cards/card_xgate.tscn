@@ -14,7 +14,7 @@ CardDescription = "Invierte valor de un Qubit"
 [node name="X" type="Sprite2D" parent="Card"]
 show_behind_parent = true
 z_index = 1
-position = Vector2(3, -48)
+position = Vector2(3, -47)
 scale = Vector2(2, 2)
 texture = ExtResource("3_jdtk5")
 

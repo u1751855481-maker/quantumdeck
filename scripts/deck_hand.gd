@@ -168,11 +168,12 @@ func measure_result_tokens_with_flip() -> void:
 			var flip_tween = token.play_flip_to_value(measured_value, MEASURE_FLIP_DURATION)
 			if(flip_tween):
 				flip_tweens.push_back(flip_tween)
+	play_sfx_token_flip()
 	for tween in flip_tweens:
 		await tween.finished
 	if(flip_tweens.size() > 0):
 		await get_tree().create_timer(MEASURE_REVEAL_DELAY).timeout
-
+	
 func get_card_accuracy():
 	var damage = 0
 	var heal = 0
@@ -218,6 +219,7 @@ func show_combat_text(text:String, color:Color = Color(1,1,1,1)):
 	$CombatLog.modulate = color
 func resolve_enemy_attack():
 	BattleManagerAux.resolve_enemy_attack()
+	play_sfx_enemy_hit()
 func set_token_area():
 	for i in 3:
 		var token = TokenScene.instantiate()
@@ -232,6 +234,7 @@ func _on_hand_release_card():
 			CurrentCard.unhighlight()
 			CurrentSlot.set_card_inside(CurrentCard)
 			QuanticPlayerHand.remove_the_card(CurrentCard)
+			play_sfx_drop_card()
 			if(CurrentCard.get_card_name() == "ControlledX"):
 				PHASE = "CUANTIC_INSERT_OUTPUT"
 				OutputCard = CardControlledXTargetScene.instantiate()
@@ -249,6 +252,7 @@ func _on_hand_release_card():
 	CurrentCard = null
 
 func _on_hand_click_card(card: Card,pos: Vector2):
+	play_sfx_pick_card()
 	if(IsMeasureSequenceRunning):
 		return
 	CurrentCard = card
@@ -289,6 +293,7 @@ func _on_hand_spells_click_card(card: Card,pos:Vector2):
 	if(IsMeasureSequenceRunning):
 		return
 	if(PlayerBoard.can_insert_card()):
+		play_sfx_drop_card()
 		PlayerBoard.insert_card(PlayerHand.remove_the_card(card))
 		card.unhighlight()
 		PHASE = "QUANTIC_DRAW"
@@ -305,6 +310,7 @@ func _on_hand_spells_click_card(card: Card,pos:Vector2):
 
 
 func _on_battle_manager_player_attacked():
+	play_sfx_explosion()
 	resolve_enemy_attack()
 	pass # Replace with function body.
 
@@ -322,6 +328,7 @@ func _on_battle_manager_enemy_attacked():
 	pass # Replace with function body.
 
 func _on_battle_manager_enemy_defeated():
+	play_sfx_splat()
 	unlock_all_player_input()
 	PHASE = "USUAL_DRAW"
 	PlayerBoard.clear_cards()
@@ -330,6 +337,7 @@ func _on_battle_manager_enemy_defeated():
 	pass # Replace with function body.
 
 func _on_battle_manager_player_defeated(final_score: int):
+	play_sfx_splat()
 	if(IsGameOver):
 		return
 	IsGameOver = true
@@ -345,21 +353,35 @@ func _on_restart_button_pressed():
 	get_tree().reload_current_scene()
 
 func play_sfx_draw_card() -> void:
-	# TODO: Sonido - Robar carta.
-	# Conecta aquí un AudioStreamPlayer (por ejemplo: $SFX/DrawCard.play()).
+	$SFX/Draw.play()
 	pass
 
 func play_sfx_heal() -> void:
-	# TODO: Sonido - Curación.
-	# Conecta aquí un AudioStreamPlayer (por ejemplo: $SFX/Heal.play()).
+	$SFX/Heal.play()
 	pass
 
 func play_sfx_spell() -> void:
-	# TODO: Sonido - Hechizo.
-	# Conecta aquí un AudioStreamPlayer (por ejemplo: $SFX/Spell.play()).
+	$SFX/Spell.play()
 	pass
 
 func play_sfx_player_damage() -> void:
-	# TODO: Sonido - Daño al jugador.
-	# Conecta aquí un AudioStreamPlayer (por ejemplo: $SFX/PlayerDamage.play()).
+	$SFX/Damage.play()
 	pass
+
+func play_sfx_explosion():
+	$SFX/Explosion.play()
+	
+func play_sfx_enemy_hit():
+	$SFX/Enemy_Hit.play()
+	
+func play_sfx_pick_card():
+	$SFX/Pick_Card.play()
+
+func play_sfx_drop_card():
+	$SFX/Drop_Card.play()
+
+func play_sfx_token_flip():
+	$SFX/Token_Flip.play()
+
+func play_sfx_splat():
+	$SFX/Splat.play()

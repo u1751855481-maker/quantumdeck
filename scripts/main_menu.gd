@@ -32,3 +32,21 @@ func _on_exit_button_pressed() -> void:
 
 func _on_back_button_pressed() -> void:
 	CreditsPanel.visible = false
+
+
+func _on_start_button_mouse_entered() -> void:
+	$SFX/Hover.play()
+	pass # Replace with function body.
+
+func _on_credits_button_mouse_entered() -> void:
+	$SFX/Hover.play()
+	pass # Replace with function body.
+
+func _on_exit_button_mouse_entered() -> void:
+	$SFX/Hover.play()
+	pass # Replace with function body.
+
+
+func _on_back_button_mouse_entered() -> void:
+	$SFX/Hover.play()
+	pass # Replace with function body.

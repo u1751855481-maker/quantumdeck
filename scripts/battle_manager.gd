@@ -10,6 +10,7 @@ signal player_defeated(final_score: int)
 @onready var EnemyAux:Enemy = $Enemy
 @onready var ScoreAux:Score = $Score
 
+var e_lvl = 1
 var p_dmg
 var e_dmg
 var p_heal
@@ -53,13 +54,13 @@ func _on_enemy_enemy_attacked() -> void:
 		return
 	enemy_attacked.emit()
 	pass
-
-
 func _on_enemy_defeated():
 	ScoreAux.plus_score()
 	var pos = EnemyAux.position
 	remove_child(EnemyAux)
 	EnemyAux = EnemyScene.instantiate()
+	e_lvl = e_lvl + 1
+	EnemyAux.set_level(e_lvl)
 	add_child(EnemyAux)
 	EnemyAux.position = pos
 	EnemyAux.connect("Defeated",_on_enemy_defeated)

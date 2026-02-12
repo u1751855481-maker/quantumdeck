@@ -14,6 +14,7 @@ func play_attack_anim():
 	$AnimatedSprite2D.play("attack")
 
 func heal(heal:int):
+	play_particle_heal()
 	if(Health + heal>MaxHealth):
 		Health = MaxHealth
 	else:
@@ -43,4 +44,11 @@ func _on_animated_sprite_2d_animation_finished():
 	if($AnimatedSprite2D.animation == "attack"):
 		$AnimatedSprite2D.play("idle")
 		player_attacked.emit()
+	pass # Replace with function body.
+func play_particle_heal():
+	$Particles.visible = true
+	$Particles.play("heal")
+
+func _on_particles_animation_finished() -> void:
+	$Particles.visible = false
 	pass # Replace with function body.

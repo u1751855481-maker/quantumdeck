@@ -2,9 +2,11 @@ class_name Enemy extends Node2D
 
 signal Defeated
 signal enemy_attacked
-var Attacks = [1,8]
+var Attacks = [2,8]
+
+@export var level = 1
 @export var MaxHealth:int = 100
-@export var Health:int = 100
+@export var Health:int = 1	
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -26,7 +28,7 @@ func _process(delta: float) -> void:
 	pass
 	
 func get_random_attack():
-	return Attacks.pick_random()
+	return Attacks.pick_random() * level
 	
 func play_particle_fire():
 	$Particles.visible = true
@@ -48,3 +50,7 @@ func _on_animated_sprite_2d_animation_finished():
 		enemy_attacked.emit()
 		$AnimatedSprite2D.play("idle")
 	pass # Replace with function body.
+	
+func set_level(lvl:int):
+	level = lvl
+	

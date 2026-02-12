@@ -1,0 +1,184 @@
+[gd_scene load_steps=16 format=3 uid="uid://k05l6rnoln3j"]
+
+[ext_resource type="Texture2D" uid="uid://ch4nbav34mm7t" path="res://Assets/buttonsui.png" id="1_iyx0m"]
+[ext_resource type="Texture2D" uid="uid://t7fmy6djxobo" path="res://Assets/Base_card.png" id="2_74lek"]
+[ext_resource type="Texture2D" uid="uid://dcd1fca6spyyb" path="res://Assets/pixelCardAssest.png" id="3_j5jx5"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lpvoh"]
+atlas = ExtResource("1_iyx0m")
+region = Rect2(129, 64, 62, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_at5dv"]
+atlas = ExtResource("1_iyx0m")
+region = Rect2(193, 65, 62, 31)
+
+[sub_resource type="LabelSettings" id="LabelSettings_jcd4p"]
+font_size = 20
+font_color = Color(0, 0, 0, 1)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uacia"]
+atlas = ExtResource("1_iyx0m")
+region = Rect2(129, 64, 62, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yk7ts"]
+atlas = ExtResource("1_iyx0m")
+region = Rect2(193, 64, 62, 32)
+
+[sub_resource type="LabelSettings" id="LabelSettings_ajshl"]
+font_size = 20
+font_color = Color(0, 0, 0, 1)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ghpyy"]
+atlas = ExtResource("1_iyx0m")
+region = Rect2(129, 64, 62, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_44saj"]
+atlas = ExtResource("1_iyx0m")
+region = Rect2(194, 64, 61, 32)
+
+[sub_resource type="LabelSettings" id="LabelSettings_7mbro"]
+font_size = 20
+font_color = Color(0, 0, 0, 1)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ff6ho"]
+atlas = ExtResource("1_iyx0m")
+region = Rect2(129, 64, 62, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7yos8"]
+atlas = ExtResource("1_iyx0m")
+region = Rect2(192, 64, 63, 32)
+
+[sub_resource type="LabelSettings" id="LabelSettings_5jxlq"]
+font_size = 20
+font_color = Color(0, 0, 0, 1)
+
+[node name="test" type="Node2D"]
+
+[node name="Button" type="TextureButton" parent="."]
+visible = false
+offset_left = 1586.0
+offset_top = 640.0
+offset_right = 1791.0
+offset_bottom = 720.0
+texture_normal = SubResource("AtlasTexture_lpvoh")
+texture_hover = SubResource("AtlasTexture_at5dv")
+ignore_texture_size = true
+stretch_mode = 0
+metadata/_edit_use_anchors_ = true
+
+[node name="Label" type="Label" parent="Button"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -16.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "DRAW CARD"
+label_settings = SubResource("LabelSettings_jcd4p")
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Button2" type="TextureButton" parent="."]
+visible = false
+offset_left = 1586.0
+offset_top = 640.0
+offset_right = 1791.0
+offset_bottom = 720.0
+texture_normal = ExtResource("2_74lek")
+texture_hover = ExtResource("3_j5jx5")
+ignore_texture_size = true
+stretch_mode = 0
+metadata/_edit_use_anchors_ = true
+
+[node name="Label" type="Label" parent="Button2"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "End card turn"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Button3" type="TextureButton" parent="."]
+visible = false
+offset_left = 1586.0
+offset_top = 640.0
+offset_right = 1791.0
+offset_bottom = 720.0
+texture_normal = SubResource("AtlasTexture_uacia")
+texture_hover = SubResource("AtlasTexture_yk7ts")
+ignore_texture_size = true
+stretch_mode = 0
+metadata/_edit_use_anchors_ = true
+
+[node name="Label" type="Label" parent="Button3"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -16.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "DRAW CARD"
+label_settings = SubResource("LabelSettings_ajshl")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Button4" type="TextureButton" parent="."]
+visible = false
+offset_left = 1586.0
+offset_top = 640.0
+offset_right = 1791.0
+offset_bottom = 720.0
+texture_normal = SubResource("AtlasTexture_ghpyy")
+texture_hover = SubResource("AtlasTexture_44saj")
+ignore_texture_size = true
+stretch_mode = 0
+metadata/_edit_use_anchors_ = true
+
+[node name="Label" type="Label" parent="Button4"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -16.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "RESOLVE"
+label_settings = SubResource("LabelSettings_7mbro")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Button5" type="TextureButton" parent="."]
+visible = false
+offset_left = 1586.0
+offset_top = 640.0
+offset_right = 1791.0
+offset_bottom = 720.0
+texture_normal = SubResource("AtlasTexture_ff6ho")
+texture_hover = SubResource("AtlasTexture_7yos8")
+ignore_texture_size = true
+stretch_mode = 0
+metadata/_edit_use_anchors_ = true
+
+[node name="Label" type="Label" parent="Button5"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -16.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "MEASURE"
+label_settings = SubResource("LabelSettings_5jxlq")
+horizontal_alignment = 1
+vertical_alignment = 1

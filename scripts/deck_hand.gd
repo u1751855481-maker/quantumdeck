@@ -22,6 +22,7 @@ var WORLD: String = "USUAL"
 var SetTokenArea:int = 1
 var IsGameOver: bool = false
 var IsMeasureSequenceRunning: bool = false
+const MEASURE_FLIP_DURATION: float = 0.35
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	PlayerHand.add_card(CardSpell1Scene.instantiate())
@@ -69,6 +70,8 @@ func visualize_elements(phase:String):
 
 func lock_all_player_input():
 	IsMeasureSequenceRunning = true
+	CurrentCard = null
+	CurrentSlot = null
 	hide_all_buttons()
 	PlayerHand.CanInteract = false
 	QuanticPlayerHand.CanInteract = false
@@ -149,13 +152,18 @@ func _on_button_5_pressed():
 
 func measure_result_tokens_with_flip() -> void:
 	var result_area = QuanticPlayerBoard.get_result_area()
+	var flip_tweens: Array[Tween] = []
 	for i in QuanticPlayerBoard.get_result().size():
 		var token = result_area.get_token_from_index(i)
 		if(token && token.get_value() == "?"):
 			var measured_value = "0"
 			if(randi_range(0,1)==1):
 				measured_value = "1"
-			await token.play_flip_to_value(measured_value)
+			var flip_tween = token.play_flip_to_value(measured_value, MEASURE_FLIP_DURATION)
+			if(flip_tween):
+				flip_tweens.push_back(flip_tween)
+	for tween in flip_tweens:
+		await tween.finished
 
 func get_card_accuracy():
 	var damage = 0

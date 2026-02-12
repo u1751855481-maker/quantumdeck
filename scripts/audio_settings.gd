@@ -1,28 +1,41 @@
 extends Node
 
-const SETTINGS_PATH := "user://settings.cfg"
-const SECTION_AUDIO := "audio"
-const KEY_MASTER_VOLUME := "master_volume"
-
 var master_volume_percent: float = 100.0
+var music_volume_percent: float = 100.0
+var sfx_volume_percent: float = 100.0
 
 func _ready() -> void:
 	load_settings()
-	apply_master_volume()
+	apply_all_buses()
 
 func set_master_volume_percent(value: float) -> void:
 	master_volume_percent = clampf(value, 0.0, 100.0)
-	apply_master_volume()
-	save_settings()
+	apply_bus_volume("Master", master_volume_percent)
+	persist_audio()
 
-func apply_master_volume() -> void:
-	var master_index := AudioServer.get_bus_index("Master")
-	if(master_index == -1):
+func set_music_volume_percent(value: float) -> void:
+	music_volume_percent = clampf(value, 0.0, 100.0)
+	apply_bus_volume("Music", music_volume_percent)
+	persist_audio()
+
+func set_sfx_volume_percent(value: float) -> void:
+	sfx_volume_percent = clampf(value, 0.0, 100.0)
+	apply_bus_volume("SFX", sfx_volume_percent)
+	persist_audio()
+
+func apply_all_buses() -> void:
+	apply_bus_volume("Master", master_volume_percent)
+	apply_bus_volume("Music", music_volume_percent)
+	apply_bus_volume("SFX", sfx_volume_percent)
+
+func apply_bus_volume(bus_name: String, value_percent: float) -> void:
+	var bus_index := AudioServer.get_bus_index(bus_name)
+	if(bus_index == -1):
 		return
-	if(master_volume_percent <= 0.0):
-		AudioServer.set_bus_volume_db(master_index, -80.0)
+	if(value_percent <= 0.0):
+		AudioServer.set_bus_volume_db(bus_index, -80.0)
 	else:
-		AudioServer.set_bus_volume_db(master_index, linear_to_db(master_volume_percent / 100.0))
+		AudioServer.set_bus_volume_db(bus_index, linear_to_db(value_percent / 100.0))
 
 func get_volume_icon() -> String:
 	if(master_volume_percent <= 0.0):
@@ -32,12 +45,11 @@ func get_volume_icon() -> String:
 	return "🔊"
 
 func load_settings() -> void:
-	var config := ConfigFile.new()
-	if(config.load(SETTINGS_PATH) == OK):
-		master_volume_percent = float(config.get_value(SECTION_AUDIO, KEY_MASTER_VOLUME, 100.0))
-	master_volume_percent = clampf(master_volume_percent, 0.0, 100.0)
+	master_volume_percent = SaveSystem.get_audio_value("master_volume", 100.0)
+	music_volume_percent = SaveSystem.get_audio_value("music_volume", 100.0)
+	sfx_volume_percent = SaveSystem.get_audio_value("sfx_volume", 100.0)
 
-func save_settings() -> void:
-	var config := ConfigFile.new()
-	config.set_value(SECTION_AUDIO, KEY_MASTER_VOLUME, master_volume_percent)
-	config.save(SETTINGS_PATH)
+func persist_audio() -> void:
+	SaveSystem.set_audio_value("master_volume", master_volume_percent)
+	SaveSystem.set_audio_value("music_volume", music_volume_percent)
+	SaveSystem.set_audio_value("sfx_volume", sfx_volume_percent)

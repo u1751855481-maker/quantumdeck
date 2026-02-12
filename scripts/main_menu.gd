@@ -12,6 +12,7 @@ extends Control
 @onready var CodeNamesLabel: Label = $CreditsPanel/MarginContainer/CreditsVBox/CodeSection/Names
 
 func _ready() -> void:
+	GameState.set_state(GameState.State.MENU)
 	CreditsPanel.visible = false
 	update_credits_labels()
 
@@ -22,6 +23,7 @@ func update_credits_labels() -> void:
 	CodeNamesLabel.text = "\n".join(CodeDevelopmentNames)
 
 func _on_start_button_pressed() -> void:
+	GameState.set_state(GameState.State.PLAYING)
 	get_tree().change_scene_to_file("res://scenes/deck_hand.tscn")
 
 func _on_credits_button_pressed() -> void:

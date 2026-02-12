@@ -18,6 +18,9 @@ run/snap/snap_2d_vertices_to_pixel=false
 
 [autoload]
 
+SaveSystem="*res://scripts/save_system.gd"
+GameState="*res://scripts/game_state.gd"
+CombatLog="*res://scripts/combat_log.gd"
 AudioSettings="*res://scripts/audio_settings.gd"
 
 [display]

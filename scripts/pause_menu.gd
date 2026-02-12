@@ -1,5 +1,8 @@
 extends CanvasLayer
 
+signal requested_close
+signal requested_open_settings
+signal requested_back
 signal pause_opened
 signal pause_closed
 signal exit_to_menu_requested
@@ -37,10 +40,11 @@ func toggle() -> void:
 		open_pause()
 
 func open_pause() -> void:
-	if(IsOpen):
+	if(IsOpen || !GameState.can_pause()):
 		return
 	IsOpen = true
 	get_tree().paused = true
+	GameState.set_state(GameState.State.PAUSED)
 	show_view("main")
 	animate_panel(PANEL_VISIBLE_Y)
 	pause_opened.emit()
@@ -50,9 +54,12 @@ func close_pause() -> void:
 		return
 	IsOpen = false
 	get_tree().paused = false
+	if(!GameState.is_game_over()):
+		GameState.set_state(GameState.State.PLAYING)
 	show_view("main")
 	animate_panel(PANEL_HIDDEN_Y)
 	pause_closed.emit()
+	requested_close.emit()
 
 func set_pause_enabled(enabled: bool) -> void:
 	ToggleButton.visible = enabled
@@ -80,9 +87,11 @@ func _on_resume_button_pressed() -> void:
 
 func _on_settings_button_pressed() -> void:
 	show_view("settings")
+	requested_open_settings.emit()
 
 func _on_settings_back_button_pressed() -> void:
 	show_view("main")
+	requested_back.emit()
 
 func _on_main_menu_button_pressed() -> void:
 	show_view("confirm")

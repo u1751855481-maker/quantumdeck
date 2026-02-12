@@ -14,7 +14,9 @@ extends Node2D
 @onready var PlayerBoard: BoardSpells = $CanvasLayer/World/Board_Spells
 @onready var BattleManagerAux: BattleManager = $Battle_Manager
 @onready var CardSpell2Scene: PackedScene = preload("res://scenes/cards/card_spell_heal.tscn")
-@onready var PauseMenu: CanvasLayer = $PauseMenu
+@onready var UIManager: CanvasLayer = $UIRoot
+var PauseMenu: CanvasLayer
+var DebugOverlay: Control
 var OutputCard: Card
 var CurrentCard: Card
 var CurrentSlot: CardSlot
@@ -39,7 +41,18 @@ func _ready() -> void:
 	visualize_elements(PHASE)
 	set_world(WORLD)
 	$GameOverLayer.visible = false
-	PauseMenu.connect("exit_to_menu_requested", _on_pause_menu_exit_to_menu_requested)
+	GameState.set_state(GameState.State.PLAYING)
+	CombatLog.clear()
+	PauseMenu = UIManager.open_menu("pause_menu")
+	if(PauseMenu):
+		PauseMenu.connect("exit_to_menu_requested", _on_pause_menu_exit_to_menu_requested)
+	UIManager.open_menu("combat_log_panel")
+	DebugOverlay = UIManager.open_menu("debug_overlay")
+	if(DebugOverlay):
+		DebugOverlay.connect("requested_reload_scene", _on_debug_reload_scene_requested)
+		DebugOverlay.connect("requested_give_spell", _on_debug_give_spell_requested)
+		DebugOverlay.connect("requested_force_enemy_attack", _on_debug_force_enemy_attack_requested)
+		DebugOverlay.connect("requested_force_defeat", _on_debug_force_defeat_requested)
 	pass # Replace with function body.
 func visualize_elements(phase:String):
 	if(IsMeasureSequenceRunning):
@@ -220,6 +233,7 @@ func get_card_power(card: CardSpell) -> int:
 func show_combat_text(text:String, color:Color = Color(1,1,1,1)):
 	$CombatLog.text = text
 	$CombatLog.modulate = color
+	CombatLog.add_entry(text)
 func resolve_enemy_attack():
 	BattleManagerAux.resolve_enemy_attack()
 	play_sfx_enemy_hit()
@@ -347,14 +361,19 @@ func _on_battle_manager_player_defeated(final_score: int):
 	show_combat_text("Derrota", Color(1, 0.5, 0.5, 1))
 	$GameOverLayer/Panel/FinalScore.text = "Score: " + str(final_score)
 	$GameOverLayer.visible = true
-	PauseMenu.set_pause_enabled(false)
+	GameState.set_state(GameState.State.GAME_OVER)
+	SaveSystem.set_high_score(final_score)
+	if(PauseMenu):
+		PauseMenu.set_pause_enabled(false)
 	PlayerHand.CanInteract = false
 	QuanticPlayerHand.CanInteract = false
 	hide_all_buttons()
 
 func _on_restart_button_pressed():
 	unlock_all_player_input()
-	PauseMenu.set_pause_enabled(true)
+	GameState.set_state(GameState.State.PLAYING)
+	if(PauseMenu):
+		PauseMenu.set_pause_enabled(true)
 	get_tree().reload_current_scene()
 
 func play_sfx_draw_card() -> void:
@@ -393,4 +412,24 @@ func play_sfx_splat():
 
 
 func _on_pause_menu_exit_to_menu_requested() -> void:
-	get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
+	GameState.set_state(GameState.State.MENU)
+	if(UIManager):
+		await UIManager.transition_to_scene("res://scenes/main_menu.tscn")
+	else:
+		get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
+
+func _on_debug_reload_scene_requested() -> void:
+	get_tree().reload_current_scene()
+
+func _on_debug_give_spell_requested() -> void:
+	var card_scenes = [CardSpell1Scene, CardSpell2Scene]
+	var card = card_scenes[randi_range(0, card_scenes.size() - 1)].instantiate()
+	PlayerHand.add_card(card)
+	show_combat_text("[DEBUG] Carta añadida", Color(0.6, 0.8, 1.0, 1.0))
+
+func _on_debug_force_enemy_attack_requested() -> void:
+	resolve_enemy_attack()
+	show_combat_text("[DEBUG] Ataque enemigo forzado", Color(1, 0.8, 0.6, 1.0))
+
+func _on_debug_force_defeat_requested() -> void:
+	_on_battle_manager_player_defeated($Battle_Manager/Score.score)

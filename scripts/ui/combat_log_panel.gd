@@ -11,17 +11,17 @@ func _ready() -> void:
 	rebuild_log()
 
 func rebuild_log() -> void:
-	TextOutput.clear()
+	TextOutput.text = ""
 	for entry in CombatLog.get_entries():
-		TextOutput.append_text(entry + "\n")
-	TextOutput.scroll_to_line(TextOutput.get_line_count())
+		TextOutput.text += entry + "\n"
+	TextOutput.scroll_to_line(max(TextOutput.get_line_count() - 1, 0))
 
 func _on_combat_log_entry_added(entry: String) -> void:
-	TextOutput.append_text(entry + "\n")
-	TextOutput.scroll_to_line(TextOutput.get_line_count())
+	TextOutput.text += entry + "\n"
+	TextOutput.scroll_to_line(max(TextOutput.get_line_count() - 1, 0))
 
 func _on_combat_log_entries_cleared() -> void:
-	TextOutput.clear()
+	TextOutput.text = ""
 
 func _on_clear_button_pressed() -> void:
 	CombatLog.clear()

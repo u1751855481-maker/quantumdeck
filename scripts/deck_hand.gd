@@ -43,6 +43,7 @@ func _ready() -> void:
 	$GameOverLayer.visible = false
 	GameState.set_state(GameState.State.PLAYING)
 	CombatLog.clear()
+	CombatLog.add_entry("Combate iniciado")
 	PauseMenu = UIManager.open_menu("pause_menu")
 	if(PauseMenu):
 		PauseMenu.connect("exit_to_menu_requested", _on_pause_menu_exit_to_menu_requested)

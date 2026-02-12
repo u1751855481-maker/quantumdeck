@@ -371,10 +371,14 @@ func _on_battle_manager_player_defeated(final_score: int):
 
 func _on_restart_button_pressed():
 	unlock_all_player_input()
-	GameState.set_state(GameState.State.PLAYING)
+	GameState.set_state(GameState.State.MENU)
+	get_tree().paused = false
 	if(PauseMenu):
-		PauseMenu.set_pause_enabled(true)
-	get_tree().reload_current_scene()
+		PauseMenu.set_pause_enabled(false)
+	if(UIManager):
+		await UIManager.transition_to_scene("res://scenes/main_menu.tscn")
+	else:
+		get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
 
 func play_sfx_draw_card() -> void:
 	$SFX/Draw.play()

@@ -43,10 +43,11 @@ func get_menu(menu_name: String) -> Node:
 	return null
 
 func transition_to_scene(scene_path: String) -> void:
+	var tree := get_tree()
+	if(tree == null):
+		return
 	await fade_in()
-	get_tree().change_scene_to_file(scene_path)
-	await get_tree().process_frame
-	await fade_out()
+	tree.change_scene_to_file(scene_path)
 
 func fade_in() -> void:
 	FadeRect.visible = true

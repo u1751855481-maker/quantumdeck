@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://cbec7n612menu"]
+[gd_scene load_steps=6 format=3 uid="uid://cbec7n612menu"]
 
 [ext_resource type="Script" uid="uid://u6eqcvkytbi0" path="res://scripts/main_menu.gd" id="1_menu"]
 [ext_resource type="Texture2D" uid="uid://2gcjqmqolnac" path="res://Assets/bg.png" id="2_bg"]
 [ext_resource type="AudioStream" uid="uid://dvbv6lxdgam83" path="res://Assets/sfx/click.mp3" id="3_bqqt6"]
+[ext_resource type="Script" path="res://scripts/main_menu_particles.gd" id="4_particles"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_bqqt6"]
 
@@ -47,6 +48,11 @@ text = "Iniciar juego"
 custom_minimum_size = Vector2(480, 72)
 layout_mode = 2
 text = "Créditos"
+
+[node name="HistoryButton" type="Button" parent="MenuCenter/MenuVBox"]
+custom_minimum_size = Vector2(480, 72)
+layout_mode = 2
+text = "HISTORIA"
 
 [node name="ExitButton" type="Button" parent="MenuCenter/MenuVBox"]
 custom_minimum_size = Vector2(480, 72)
@@ -146,6 +152,17 @@ text = "Volver"
 position = Vector2(382, 295)
 texture = SubResource("CompressedTexture2D_bqqt6")
 
+
+[node name="ParticlesLayer" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("4_particles")
+
 [node name="SFX" type="Node2D" parent="."]
 position = Vector2(720, 408)
 
@@ -156,6 +173,8 @@ stream = ExtResource("3_bqqt6")
 [connection signal="pressed" from="MenuCenter/MenuVBox/StartButton" to="." method="_on_start_button_pressed"]
 [connection signal="mouse_entered" from="MenuCenter/MenuVBox/CreditsButton" to="." method="_on_credits_button_mouse_entered"]
 [connection signal="pressed" from="MenuCenter/MenuVBox/CreditsButton" to="." method="_on_credits_button_pressed"]
+[connection signal="mouse_entered" from="MenuCenter/MenuVBox/HistoryButton" to="." method="_on_history_button_mouse_entered"]
+[connection signal="pressed" from="MenuCenter/MenuVBox/HistoryButton" to="." method="_on_history_button_pressed"]
 [connection signal="mouse_entered" from="MenuCenter/MenuVBox/ExitButton" to="." method="_on_exit_button_mouse_entered"]
 [connection signal="pressed" from="MenuCenter/MenuVBox/ExitButton" to="." method="_on_exit_button_pressed"]
 [connection signal="mouse_entered" from="CreditsPanel/MarginContainer/CreditsVBox/BackButton" to="." method="_on_back_button_mouse_entered"]

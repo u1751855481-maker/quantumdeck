@@ -14,6 +14,7 @@ signal exit_to_menu_requested
 @onready var ConfirmView: VBoxContainer = $PausePanel/Margin/Root/ConfirmView
 @onready var VolumeLabel: Label = $PausePanel/Margin/Root/SettingsView/VolumeLabel
 @onready var VolumeSlider: HSlider = $PausePanel/Margin/Root/SettingsView/VolumeSlider
+@onready var PausedLabel: Label = $PausedLabel
 
 const PANEL_HIDDEN_Y: float = -360.0
 const PANEL_VISIBLE_Y: float = 48.0
@@ -27,6 +28,7 @@ func _ready() -> void:
 	PausePanel.process_mode = Node.PROCESS_MODE_ALWAYS
 	PausePanel.position.y = PANEL_HIDDEN_Y
 	VolumeSlider.value = AudioSettings.master_volume_percent
+	PausedLabel.visible = false
 	update_volume_label()
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -47,6 +49,7 @@ func open_pause() -> void:
 	GameState.set_state(GameState.State.PAUSED)
 	show_view("main")
 	animate_panel(PANEL_VISIBLE_Y)
+	PausedLabel.visible = true
 	pause_opened.emit()
 
 func close_pause() -> void:
@@ -58,6 +61,7 @@ func close_pause() -> void:
 		GameState.set_state(GameState.State.PLAYING)
 	show_view("main")
 	animate_panel(PANEL_HIDDEN_Y)
+	PausedLabel.visible = false
 	pause_closed.emit()
 
 func set_pause_enabled(enabled: bool) -> void:

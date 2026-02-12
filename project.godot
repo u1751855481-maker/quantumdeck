@@ -16,6 +16,10 @@ config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="res://icon.svg"
 run/snap/snap_2d_vertices_to_pixel=false
 
+[autoload]
+
+AudioSettings="*res://scripts/audio_settings.gd"
+
 [display]
 
 window/size/viewport_width=1920

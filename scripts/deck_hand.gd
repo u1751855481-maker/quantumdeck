@@ -24,6 +24,19 @@ var IsGameOver: bool = false
 var IsMeasureSequenceRunning: bool = false
 const MEASURE_FLIP_DURATION: float = 0.35
 const MEASURE_REVEAL_DELAY: float = 0.25
+
+var PauseButton: Button
+var PausePanel: PanelContainer
+var PauseMainView: VBoxContainer
+var PauseSettingsView: VBoxContainer
+var PauseConfirmView: VBoxContainer
+var PauseVolumeSlider: HSlider
+var PauseVolumeLabel: Label
+var IsPausePanelOpen: bool = false
+
+const PAUSE_PANEL_HIDDEN_Y: float = -360.0
+const PAUSE_PANEL_SHOWN_Y: float = 48.0
+const PAUSE_PANEL_TWEEN_DURATION: float = 0.2
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	PlayerHand.add_card(CardSpell1Scene.instantiate())
@@ -37,6 +50,7 @@ func _ready() -> void:
 	visualize_elements(PHASE)
 	set_world(WORLD)
 	$GameOverLayer.visible = false
+	setup_pause_menu_ui()
 	pass # Replace with function body.
 func visualize_elements(phase:String):
 	if(IsMeasureSequenceRunning):
@@ -95,6 +109,10 @@ func hide_all_buttons():
 		$Button5.visible = false
 		$Button5.set_process(false)
 # Called every frame. 'delta' is the elapsed time since the previous frame.
+func _unhandled_input(event: InputEvent) -> void:
+	if(event.is_action_pressed("ui_cancel") && !IsGameOver):
+		toggle_pause_panel()
+
 func _process(delta: float):
 	if(CurrentCard):
 		var mouse = get_global_mouse_position()
@@ -385,3 +403,168 @@ func play_sfx_token_flip():
 
 func play_sfx_splat():
 	$SFX/Splat.play()
+
+
+func setup_pause_menu_ui() -> void:
+	var pause_layer := CanvasLayer.new()
+	pause_layer.layer = 20
+	pause_layer.name = "PauseMenuLayer"
+	pause_layer.process_mode = Node.PROCESS_MODE_ALWAYS
+	add_child(pause_layer)
+
+	PauseButton = Button.new()
+	PauseButton.text = "⚙"
+	PauseButton.custom_minimum_size = Vector2(44, 44)
+	PauseButton.position = Vector2(16, 12)
+	PauseButton.process_mode = Node.PROCESS_MODE_ALWAYS
+	PauseButton.pressed.connect(_on_pause_button_pressed)
+	pause_layer.add_child(PauseButton)
+
+	PausePanel = PanelContainer.new()
+	PausePanel.custom_minimum_size = Vector2(320, 300)
+	PausePanel.position = Vector2(16, PAUSE_PANEL_HIDDEN_Y)
+	PausePanel.process_mode = Node.PROCESS_MODE_ALWAYS
+	pause_layer.add_child(PausePanel)
+
+	var margin := MarginContainer.new()
+	margin.add_theme_constant_override("margin_left", 14)
+	margin.add_theme_constant_override("margin_top", 14)
+	margin.add_theme_constant_override("margin_right", 14)
+	margin.add_theme_constant_override("margin_bottom", 14)
+	PausePanel.add_child(margin)
+
+	var root := VBoxContainer.new()
+	root.add_theme_constant_override("separation", 8)
+	margin.add_child(root)
+
+	var title := Label.new()
+	title.text = "Pausa"
+	root.add_child(title)
+
+	PauseMainView = VBoxContainer.new()
+	PauseMainView.add_theme_constant_override("separation", 6)
+	root.add_child(PauseMainView)
+
+	var resume_button := Button.new()
+	resume_button.text = "Reanudar"
+	resume_button.pressed.connect(_on_resume_button_pressed)
+	PauseMainView.add_child(resume_button)
+
+	var settings_button := Button.new()
+	settings_button.text = "Ajustes"
+	settings_button.pressed.connect(_on_settings_button_pressed)
+	PauseMainView.add_child(settings_button)
+
+	var menu_button := Button.new()
+	menu_button.text = "Salir al menú principal"
+	menu_button.pressed.connect(_on_main_menu_button_pressed)
+	PauseMainView.add_child(menu_button)
+
+	PauseSettingsView = VBoxContainer.new()
+	PauseSettingsView.visible = false
+	PauseSettingsView.add_theme_constant_override("separation", 6)
+	root.add_child(PauseSettingsView)
+
+	var settings_title := Label.new()
+	settings_title.text = "Ajustes"
+	PauseSettingsView.add_child(settings_title)
+
+	PauseVolumeLabel = Label.new()
+	PauseSettingsView.add_child(PauseVolumeLabel)
+
+	PauseVolumeSlider = HSlider.new()
+	PauseVolumeSlider.min_value = 0
+	PauseVolumeSlider.max_value = 100
+	PauseVolumeSlider.step = 1
+	PauseVolumeSlider.value_changed.connect(_on_volume_slider_changed)
+	PauseSettingsView.add_child(PauseVolumeSlider)
+
+	var back_button := Button.new()
+	back_button.text = "Atrás"
+	back_button.pressed.connect(_on_settings_back_button_pressed)
+	PauseSettingsView.add_child(back_button)
+
+	PauseConfirmView = VBoxContainer.new()
+	PauseConfirmView.visible = false
+	PauseConfirmView.add_theme_constant_override("separation", 6)
+	root.add_child(PauseConfirmView)
+
+	var confirm_label := Label.new()
+	confirm_label.text = "¿Seguro que quieres salir al menú?"
+	PauseConfirmView.add_child(confirm_label)
+
+	var confirm_yes := Button.new()
+	confirm_yes.text = "Sí, salir"
+	confirm_yes.pressed.connect(_on_confirm_exit_yes_pressed)
+	PauseConfirmView.add_child(confirm_yes)
+
+	var confirm_no := Button.new()
+	confirm_no.text = "No, volver"
+	confirm_no.pressed.connect(_on_confirm_exit_no_pressed)
+	PauseConfirmView.add_child(confirm_no)
+
+	PauseVolumeSlider.value = AudioSettings.master_volume_percent
+	update_volume_label()
+
+func show_pause_view(view_name: String) -> void:
+	PauseMainView.visible = view_name == "main"
+	PauseSettingsView.visible = view_name == "settings"
+	PauseConfirmView.visible = view_name == "confirm"
+
+func toggle_pause_panel() -> void:
+	if(IsPausePanelOpen):
+		close_pause_panel()
+	else:
+		open_pause_panel()
+
+func open_pause_panel() -> void:
+	if(IsGameOver):
+		return
+	IsPausePanelOpen = true
+	get_tree().paused = true
+	show_pause_view("main")
+	animate_pause_panel(PAUSE_PANEL_SHOWN_Y)
+
+func close_pause_panel() -> void:
+	IsPausePanelOpen = false
+	get_tree().paused = false
+	show_pause_view("main")
+	animate_pause_panel(PAUSE_PANEL_HIDDEN_Y)
+
+func animate_pause_panel(target_y: float) -> void:
+	if(!PausePanel):
+		return
+	var tween := create_tween()
+	tween.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
+	tween.tween_property(PausePanel, "position:y", target_y, PAUSE_PANEL_TWEEN_DURATION)
+
+func update_volume_label() -> void:
+	if(!PauseVolumeLabel):
+		return
+	PauseVolumeLabel.text = AudioSettings.get_volume_icon() + " Volumen: " + str(int(round(AudioSettings.master_volume_percent))) + "%"
+
+func _on_pause_button_pressed() -> void:
+	toggle_pause_panel()
+
+func _on_resume_button_pressed() -> void:
+	close_pause_panel()
+
+func _on_settings_button_pressed() -> void:
+	show_pause_view("settings")
+
+func _on_main_menu_button_pressed() -> void:
+	show_pause_view("confirm")
+
+func _on_settings_back_button_pressed() -> void:
+	show_pause_view("main")
+
+func _on_confirm_exit_yes_pressed() -> void:
+	get_tree().paused = false
+	get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
+
+func _on_confirm_exit_no_pressed() -> void:
+	show_pause_view("main")
+
+func _on_volume_slider_changed(value: float) -> void:
+	AudioSettings.set_master_volume_percent(value)
+	update_volume_label()

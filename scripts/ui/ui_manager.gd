@@ -3,17 +3,17 @@ extends CanvasLayer
 @onready var MenuContainer: Control = $MenuContainer
 @onready var FadeRect: ColorRect = $FadeRect
 
-var MenuRegistry := {
+var MenuRegistry: Dictionary = {
 	"pause_menu": preload("res://scenes/pause_menu.tscn"),
 	"combat_log_panel": preload("res://scenes/ui/combat_log_panel.tscn"),
 	"debug_overlay": preload("res://scenes/ui/debug_overlay.tscn")
 }
 
-var OpenMenus := {}
+var OpenMenus: Dictionary = {}
 
 func _ready() -> void:
-	if(theme == null):
-		theme = Theme.new()
+	if(MenuContainer.theme == null):
+		MenuContainer.theme = Theme.new()
 	FadeRect.visible = false
 	FadeRect.modulate.a = 0.0
 
@@ -22,7 +22,8 @@ func open_menu(menu_name: String) -> Node:
 		return OpenMenus[menu_name]
 	if(!MenuRegistry.has(menu_name)):
 		return null
-	var menu := MenuRegistry[menu_name].instantiate()
+	var menu_scene: PackedScene = MenuRegistry[menu_name]
+	var menu: Node = menu_scene.instantiate()
 	if(menu.has_signal("requested_close")):
 		menu.connect("requested_close", _on_menu_requested_close.bind(menu_name))
 	MenuContainer.add_child(menu)

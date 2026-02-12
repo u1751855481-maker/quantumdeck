@@ -1,4 +1,4 @@
-extends CanvasLayer
+extends Control
 
 signal requested_close
 signal requested_open_settings
@@ -59,7 +59,6 @@ func close_pause() -> void:
 	show_view("main")
 	animate_panel(PANEL_HIDDEN_Y)
 	pause_closed.emit()
-	requested_close.emit()
 
 func set_pause_enabled(enabled: bool) -> void:
 	ToggleButton.visible = enabled

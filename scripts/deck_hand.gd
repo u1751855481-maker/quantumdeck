@@ -15,7 +15,7 @@ extends Node2D
 @onready var BattleManagerAux: BattleManager = $Battle_Manager
 @onready var CardSpell2Scene: PackedScene = preload("res://scenes/cards/card_spell_heal.tscn")
 @onready var UIManager: CanvasLayer = $UIRoot
-var PauseMenu: CanvasLayer
+var PauseMenu: Control
 var DebugOverlay: Control
 var OutputCard: Card
 var CurrentCard: Card

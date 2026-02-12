@@ -1,4 +1,4 @@
-[gd_scene load_steps=44 format=3 uid="uid://dvmafqbag38bf"]
+[gd_scene load_steps=45 format=3 uid="uid://dvmafqbag38bf"]
 
 [ext_resource type="Script" uid="uid://dp0i007rk2d8" path="res://scripts/deck_hand.gd" id="1_brxfj"]
 [ext_resource type="Texture2D" uid="uid://mk6ha4u8ywt7" path="res://Assets/Layer5.png" id="2_fi2e6"]
@@ -29,6 +29,7 @@
 [ext_resource type="AudioStream" uid="uid://bse23joewlf8n" path="res://Assets/sfx/drop_card.ogg" id="26_lwv30"]
 [ext_resource type="AudioStream" uid="uid://8t3q76idoxfe" path="res://Assets/sfx/token.ogg" id="27_yua3g"]
 [ext_resource type="AudioStream" uid="uid://ceo17d3wv806v" path="res://Assets/sfx/splat.ogg" id="28_3esvd"]
+[ext_resource type="PackedScene" path="res://scenes/pause_menu.tscn" id="29_pause"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_5upqq"]
 atlas = ExtResource("5_o728e")
@@ -348,6 +349,9 @@ offset_right = 381.0
 offset_bottom = 28.0
 text = "0"
 label_settings = SubResource("LabelSettings_hlw5f")
+
+
+[node name="PauseMenu" parent="." instance=ExtResource("29_pause")]
 
 [node name="SFX" type="Node2D" parent="."]
 

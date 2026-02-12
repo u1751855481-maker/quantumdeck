@@ -1,0 +1,101 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/pause_menu.gd" id="1_1"]
+
+[node name="PauseMenu" type="CanvasLayer"]
+layer = 20
+script = ExtResource("1_1")
+
+[node name="PauseToggleButton" type="Button" parent="."]
+offset_left = 16.0
+offset_top = 12.0
+offset_right = 60.0
+offset_bottom = 56.0
+text = "⚙"
+
+[node name="PausePanel" type="PanelContainer" parent="."]
+offset_left = 16.0
+offset_top = -360.0
+offset_right = 336.0
+offset_bottom = -40.0
+
+[node name="Margin" type="MarginContainer" parent="PausePanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_top = 14
+theme_override_constants/margin_right = 14
+theme_override_constants/margin_bottom = 14
+
+[node name="Root" type="VBoxContainer" parent="PausePanel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Title" type="Label" parent="PausePanel/Margin/Root"]
+layout_mode = 2
+text = "Pausa"
+
+[node name="MainView" type="VBoxContainer" parent="PausePanel/Margin/Root"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="ResumeButton" type="Button" parent="PausePanel/Margin/Root/MainView"]
+layout_mode = 2
+text = "Reanudar"
+
+[node name="SettingsButton" type="Button" parent="PausePanel/Margin/Root/MainView"]
+layout_mode = 2
+text = "Ajustes"
+
+[node name="MainMenuButton" type="Button" parent="PausePanel/Margin/Root/MainView"]
+layout_mode = 2
+text = "Salir al menú principal"
+
+[node name="SettingsView" type="VBoxContainer" parent="PausePanel/Margin/Root"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="SettingsTitle" type="Label" parent="PausePanel/Margin/Root/SettingsView"]
+layout_mode = 2
+text = "Ajustes"
+
+[node name="VolumeLabel" type="Label" parent="PausePanel/Margin/Root/SettingsView"]
+layout_mode = 2
+text = "🔊 Volumen: 100%"
+
+[node name="VolumeSlider" type="HSlider" parent="PausePanel/Margin/Root/SettingsView"]
+layout_mode = 2
+min_value = 0.0
+max_value = 100.0
+step = 1.0
+value = 100.0
+
+[node name="SettingsBackButton" type="Button" parent="PausePanel/Margin/Root/SettingsView"]
+layout_mode = 2
+text = "Atrás"
+
+[node name="ConfirmView" type="VBoxContainer" parent="PausePanel/Margin/Root"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="ConfirmLabel" type="Label" parent="PausePanel/Margin/Root/ConfirmView"]
+layout_mode = 2
+text = "¿Seguro que quieres salir al menú?"
+
+[node name="ConfirmYesButton" type="Button" parent="PausePanel/Margin/Root/ConfirmView"]
+layout_mode = 2
+text = "Sí, salir"
+
+[node name="ConfirmNoButton" type="Button" parent="PausePanel/Margin/Root/ConfirmView"]
+layout_mode = 2
+text = "No, volver"
+
+[connection signal="pressed" from="PauseToggleButton" to="." method="_on_pause_toggle_button_pressed"]
+[connection signal="pressed" from="PausePanel/Margin/Root/MainView/ResumeButton" to="." method="_on_resume_button_pressed"]
+[connection signal="pressed" from="PausePanel/Margin/Root/MainView/SettingsButton" to="." method="_on_settings_button_pressed"]
+[connection signal="pressed" from="PausePanel/Margin/Root/MainView/MainMenuButton" to="." method="_on_main_menu_button_pressed"]
+[connection signal="value_changed" from="PausePanel/Margin/Root/SettingsView/VolumeSlider" to="." method="_on_volume_slider_value_changed"]
+[connection signal="pressed" from="PausePanel/Margin/Root/SettingsView/SettingsBackButton" to="." method="_on_settings_back_button_pressed"]
+[connection signal="pressed" from="PausePanel/Margin/Root/ConfirmView/ConfirmYesButton" to="." method="_on_confirm_yes_button_pressed"]
+[connection signal="pressed" from="PausePanel/Margin/Root/ConfirmView/ConfirmNoButton" to="." method="_on_confirm_no_button_pressed"]

@@ -5,10 +5,10 @@
 [node name="CombatLogPanel" type="Control"]
 layout_mode = 1
 anchors_preset = 0
-offset_left = 1480.0
-offset_top = 560.0
-offset_right = 1900.0
-offset_bottom = 1040.0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 460.0
+offset_bottom = 320.0
 script = ExtResource("1_1")
 
 [node name="Panel" type="Panel" parent="."]
@@ -40,7 +40,7 @@ theme_override_font_sizes/font_size = 24
 text = "Combat Log"
 
 [node name="Scroll" type="ScrollContainer" parent="Panel/Margin/VBox"]
-custom_minimum_size = Vector2(0, 320)
+custom_minimum_size = Vector2(0, 160)
 layout_mode = 2
 size_flags_vertical = 3
 

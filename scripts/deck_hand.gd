@@ -27,8 +27,11 @@ const MEASURE_REVEAL_DELAY: float = 0.25
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	PlayerHand.add_card(CardSpell1Scene.instantiate())
+	play_sfx_draw_card()
 	QuanticPlayerHand.add_card(Card1Scene.instantiate())
+	play_sfx_draw_card()
 	QuanticPlayerHand.add_card(Card2Scene.instantiate())
+	play_sfx_draw_card()
 	PlayerTokenArea = QuanticPlayerBoard.get_token_area()
 	PlayerBoard.set_quantic_only(false)
 	visualize_elements(PHASE)
@@ -104,6 +107,7 @@ func _on_button_pressed():
 	var CardSceneArray = [CardSpell1Scene,CardSpell2Scene]
 	var card1 = CardSceneArray[randi_range(0,CardSceneArray.size()-1)].instantiate()
 	PlayerHand.add_card(card1)
+	play_sfx_draw_card()
 	PHASE = "USUAL_PLAY"
 	visualize_elements(PHASE)
 	
@@ -133,6 +137,7 @@ func _on_button_3_pressed():
 	var card2 = GateSceneArray[randi_range(0,1)].instantiate()
 	#Card2Scene.instantiate()
 	QuanticPlayerHand.add_card(card2)
+	play_sfx_draw_card()
 	visualize_elements(PHASE)
 	
 func _on_button_4_pressed():
@@ -185,6 +190,7 @@ func get_card_accuracy():
 		show_combat_text("Heal +" + str(heal), Color(0.65, 1.0, 0.65, 1.0))
 		BattleManagerAux.resolve_player_heal(heal)
 	if(damage > 0):
+		play_sfx_spell()
 		show_combat_text("Ataque -" + str(damage), Color(1, 0.55, 0.45, 1))
 		BattleManagerAux.resolve_player_attack(damage)
 	elif(heal > 0):
@@ -303,9 +309,11 @@ func _on_battle_manager_player_attacked():
 	pass # Replace with function body.
 
 func _on_battle_manager_player_healed(heal_amount: int):
+	play_sfx_heal()
 	show_combat_text("Curación aplicada: +" + str(heal_amount), Color(0.65, 1.0, 0.65, 1.0))
 
 func _on_battle_manager_enemy_attacked():
+	play_sfx_player_damage()
 	unlock_all_player_input()
 	PHASE = "USUAL_DRAW"
 	PlayerBoard.clear_cards()
@@ -335,3 +343,23 @@ func _on_battle_manager_player_defeated(final_score: int):
 func _on_restart_button_pressed():
 	unlock_all_player_input()
 	get_tree().reload_current_scene()
+
+func play_sfx_draw_card() -> void:
+	# TODO: Sonido - Robar carta.
+	# Conecta aquí un AudioStreamPlayer (por ejemplo: $SFX/DrawCard.play()).
+	pass
+
+func play_sfx_heal() -> void:
+	# TODO: Sonido - Curación.
+	# Conecta aquí un AudioStreamPlayer (por ejemplo: $SFX/Heal.play()).
+	pass
+
+func play_sfx_spell() -> void:
+	# TODO: Sonido - Hechizo.
+	# Conecta aquí un AudioStreamPlayer (por ejemplo: $SFX/Spell.play()).
+	pass
+
+func play_sfx_player_damage() -> void:
+	# TODO: Sonido - Daño al jugador.
+	# Conecta aquí un AudioStreamPlayer (por ejemplo: $SFX/PlayerDamage.play()).
+	pass

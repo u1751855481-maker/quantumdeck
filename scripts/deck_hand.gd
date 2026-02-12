@@ -23,6 +23,7 @@ var SetTokenArea:int = 1
 var IsGameOver: bool = false
 var IsMeasureSequenceRunning: bool = false
 const MEASURE_FLIP_DURATION: float = 0.35
+const MEASURE_REVEAL_DELAY: float = 0.25
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	PlayerHand.add_card(CardSpell1Scene.instantiate())
@@ -164,6 +165,8 @@ func measure_result_tokens_with_flip() -> void:
 				flip_tweens.push_back(flip_tween)
 	for tween in flip_tweens:
 		await tween.finished
+	if(flip_tweens.size() > 0):
+		await get_tree().create_timer(MEASURE_REVEAL_DELAY).timeout
 
 func get_card_accuracy():
 	var damage = 0

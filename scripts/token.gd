@@ -51,9 +51,9 @@ func _process(delta: float):
 	pass
 
 
-func play_flip_to_value(new_value:String, duration: float = 0.35) -> void:
+func play_flip_to_value(new_value:String, duration: float = 0.35) -> Tween:
 	if(new_value != "0" && new_value != "1" && new_value != "?"):
-		return
+		return null
 	var flip_tween = get_tree().create_tween()
 	flip_tween.tween_property(self, "scale:x", 0.0, duration * 0.5)
 	flip_tween.tween_callback(func():
@@ -61,4 +61,4 @@ func play_flip_to_value(new_value:String, duration: float = 0.35) -> void:
 		update_graphics()
 	)
 	flip_tween.tween_property(self, "scale:x", 1.0, duration * 0.5)
-	await flip_tween.finished
+	return flip_tween

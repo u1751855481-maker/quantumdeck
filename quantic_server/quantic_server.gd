@@ -13,6 +13,7 @@ var historial_instrucciones: Array = []
 var _pending_mode: String = ""
 var _pending_wakeup_endpoints: Array[String] = []
 var _pending_measurement_payloads: Array = []
+var _measurement_retry_count: int = 0
 
 func _ready():
 	conector.request_completed.connect(_al_recibir_respuesta)
@@ -49,11 +50,15 @@ func request_measurement(operations: Array, initial_bit: String = "") -> void:
 		return
 	_pending_mode = "measurement"
 	_pending_measurement_payloads = _build_measurement_payload_candidates(operations, initial_bit)
+	_measurement_retry_count = 0
 	_try_next_measurement_payload()
 
 func _try_next_measurement_payload() -> void:
 	if _pending_measurement_payloads.is_empty():
 		_pending_mode = ""
+		if _measurement_retry_count > 0:
+			print("[QuanticServer] Ningún formato de payload fue aceptado; usando fallback local.")
+		_measurement_retry_count = 0
 		measurement_completed.emit(false, _fallback_random_value())
 		return
 	var payload: Dictionary = _pending_measurement_payloads.pop_front()
@@ -79,6 +84,15 @@ func _build_measurement_payload_candidates(operations: Array, initial_bit: Strin
 			"puerta": gate_name,
 			"params": []
 		})
+
+	# Formato legado primero para minimizar 422 en el backend actual.
+	var payload_legacy_with_qubit := {"instrucciones": legacy_instructions}
+	if normalized_initial != "":
+		payload_legacy_with_qubit["qubit_inicial"] = normalized_initial
+	candidates.push_back(payload_legacy_with_qubit)
+	candidates.push_back({"instrucciones": legacy_instructions})
+
+	# Fallbacks de contrato alternativo.
 	var payload_new := {
 		"operations": operations,
 		"shots": 1
@@ -86,11 +100,6 @@ func _build_measurement_payload_candidates(operations: Array, initial_bit: Strin
 	if normalized_initial != "":
 		payload_new["qubits"] = [normalized_initial]
 	candidates.push_back(payload_new)
-	candidates.push_back({"instrucciones": legacy_instructions})
-	var payload_legacy_with_qubit := {"instrucciones": legacy_instructions}
-	if normalized_initial != "":
-		payload_legacy_with_qubit["qubit_inicial"] = normalized_initial
-	candidates.push_back(payload_legacy_with_qubit)
 	candidates.push_back({"gates": operations, "shots": 1})
 	return candidates
 
@@ -149,16 +158,18 @@ func _handle_measurement_response(result: int, response_code: int, body: PackedB
 		print("[QuanticServer] Request fallida, usando fallback local.")
 		_pending_mode = ""
 		_pending_measurement_payloads.clear()
+		_measurement_retry_count = 0
 		measurement_completed.emit(false, fallback_value)
 		return
 	if response_code == 422 and _pending_measurement_payloads.size() > 0:
-		print("[QuanticServer] Payload rechazado con 422, probando formato alternativo...")
+		_measurement_retry_count += 1
 		_try_next_measurement_payload()
 		return
 	if response_code < 200 or response_code >= 300:
 		print("[QuanticServer] Código HTTP no válido: ", response_code, ". Usando fallback local.")
 		_pending_mode = ""
 		_pending_measurement_payloads.clear()
+		_measurement_retry_count = 0
 		measurement_completed.emit(false, fallback_value)
 		return
 	var raw_text: String = body.get_string_from_utf8()
@@ -167,6 +178,7 @@ func _handle_measurement_response(result: int, response_code: int, body: PackedB
 		print("[QuanticServer] Respuesta no JSON/diccionario. Fallback local.")
 		_pending_mode = ""
 		_pending_measurement_payloads.clear()
+		_measurement_retry_count = 0
 		measurement_completed.emit(false, fallback_value)
 		return
 	var measured_value: String = _extract_measurement_value(parsed)
@@ -174,10 +186,12 @@ func _handle_measurement_response(result: int, response_code: int, body: PackedB
 		print("[QuanticServer] No se encontró medición en respuesta. Fallback local.")
 		_pending_mode = ""
 		_pending_measurement_payloads.clear()
+		_measurement_retry_count = 0
 		measurement_completed.emit(false, fallback_value)
 		return
 	_pending_mode = ""
 	_pending_measurement_payloads.clear()
+	_measurement_retry_count = 0
 	measurement_completed.emit(true, measured_value)
 
 func _extract_measurement_value(data: Dictionary) -> String:

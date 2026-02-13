@@ -28,6 +28,8 @@ var IsGameOver: bool = false
 var IsMeasureSequenceRunning: bool = false
 var TutorialTypewriterRunId: int = 0
 var LastTutorialPhase: String = ""
+var HasCompletedFirstAttackTutorial: bool = false
+var TutorialHiddenAfterFirstAttack: bool = false
 const MEASURE_FLIP_DURATION: float = 0.35
 const MEASURE_REVEAL_DELAY: float = 0.25
 var FirstDraw: int = 1
@@ -96,11 +98,14 @@ func visualize_elements(phase:String):
 	pass
 
 func show_tutorial_for_phase(phase: String) -> void:
+	if(TutorialHiddenAfterFirstAttack):
+		return
 	if(phase == LastTutorialPhase):
 		return
 	var tutorial_text: String = get_tutorial_text_for_phase(phase)
 	if(tutorial_text.is_empty()):
 		return
+	$CanvasLayer/TutorialPanel.visible = true
 	LastTutorialPhase = phase
 	start_tutorial_typewriter(tutorial_text)
 
@@ -287,8 +292,10 @@ func resolve_enemy_attack():
 	BattleManagerAux.resolve_enemy_attack()
 	play_sfx_enemy_hit()
 func set_token_area():
+	var forced_first_turn_qubits = ["1", "0", "1"]
 	for i in 3:
 		var token = TokenScene.instantiate()
+		token.change_value(forced_first_turn_qubits[i])
 		PlayerTokenArea.add_token(token)
 		#PlayerTokenArea.randomize_tokens()
 		
@@ -376,9 +383,22 @@ func _on_hand_spells_click_card(card: Card,pos:Vector2):
 
 
 func _on_battle_manager_player_attacked():
+	if(!HasCompletedFirstAttackTutorial):
+		HasCompletedFirstAttackTutorial = true
+		show_good_job_tutorial_then_hide()
 	play_sfx_explosion()
 	resolve_enemy_attack()
 	pass # Replace with function body.
+
+func show_good_job_tutorial_then_hide() -> void:
+	if(TutorialHiddenAfterFirstAttack):
+		return
+	TutorialTypewriterRunId = TutorialTypewriterRunId + 1
+	$CanvasLayer/TutorialPanel.visible = true
+	TutorialTextLabel.text = "Good Job"
+	await get_tree().create_timer(2.0).timeout
+	$CanvasLayer/TutorialPanel.visible = false
+	TutorialHiddenAfterFirstAttack = true
 
 func _on_battle_manager_player_healed(heal_amount: int):
 	play_sfx_heal()

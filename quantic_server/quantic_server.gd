@@ -12,6 +12,7 @@ signal measurement_completed(success: bool, measured_value: String)
 var historial_instrucciones: Array = []
 var _pending_mode: String = ""
 var _pending_wakeup_endpoints: Array[String] = []
+var _pending_measurement_payloads: Array = []
 
 func _ready():
 	conector.request_completed.connect(_al_recibir_respuesta)
@@ -38,7 +39,7 @@ func wake_up_server() -> void:
 	_pending_wakeup_endpoints = wakeup_endpoints.duplicate()
 	_try_next_wakeup_endpoint()
 
-func request_measurement(operations: Array, qubit: String = "?") -> void:
+func request_measurement(operations: Array, initial_bit: String = "") -> void:
 	if conector == null:
 		measurement_completed.emit(false, _fallback_random_value())
 		return
@@ -47,18 +48,51 @@ func request_measurement(operations: Array, qubit: String = "?") -> void:
 		measurement_completed.emit(false, _fallback_random_value())
 		return
 	_pending_mode = "measurement"
-	var payload := {
-		"operations": operations,
-		"qubits": [qubit],
-		"shots": 1
-	}
-	var headers = ["Content-Type: application/json"]
-	var url = _build_url(execute_endpoint)
-	var error = conector.request(url, headers, HTTPClient.METHOD_POST, JSON.stringify(payload))
-	if error != OK:
-		print("[QuanticServer] Error lanzando request de medida. Código: ", error)
+	_pending_measurement_payloads = _build_measurement_payload_candidates(operations, initial_bit)
+	_try_next_measurement_payload()
+
+func _try_next_measurement_payload() -> void:
+	if _pending_measurement_payloads.is_empty():
 		_pending_mode = ""
 		measurement_completed.emit(false, _fallback_random_value())
+		return
+	var payload: Dictionary = _pending_measurement_payloads.pop_front()
+	var headers = ["Content-Type: application/json"]
+	var error = conector.request(_build_url(execute_endpoint), headers, HTTPClient.METHOD_POST, JSON.stringify(payload))
+	if error != OK:
+		print("[QuanticServer] Error lanzando request de medida. Código: ", error)
+		_try_next_measurement_payload()
+
+func _build_measurement_payload_candidates(operations: Array, initial_bit: String) -> Array:
+	var candidates: Array = []
+	var normalized_initial = ""
+	if initial_bit == "0" or initial_bit == "1":
+		normalized_initial = initial_bit
+	var legacy_instructions: Array = []
+	for operation in operations:
+		if typeof(operation) != TYPE_DICTIONARY:
+			continue
+		var gate_name = str(operation.get("gate", ""))
+		if gate_name == "":
+			continue
+		legacy_instructions.push_back({
+			"puerta": gate_name,
+			"params": []
+		})
+	var payload_new := {
+		"operations": operations,
+		"shots": 1
+	}
+	if normalized_initial != "":
+		payload_new["qubits"] = [normalized_initial]
+	candidates.push_back(payload_new)
+	candidates.push_back({"instrucciones": legacy_instructions})
+	var payload_legacy_with_qubit := {"instrucciones": legacy_instructions}
+	if normalized_initial != "":
+		payload_legacy_with_qubit["qubit_inicial"] = normalized_initial
+	candidates.push_back(payload_legacy_with_qubit)
+	candidates.push_back({"gates": operations, "shots": 1})
+	return candidates
 
 func _enviar_instruccion(nombre_puerta: String, parametros: Array = []):
 	if conector == null:
@@ -114,11 +148,17 @@ func _handle_measurement_response(result: int, response_code: int, body: PackedB
 	if result != HTTPRequest.RESULT_SUCCESS:
 		print("[QuanticServer] Request fallida, usando fallback local.")
 		_pending_mode = ""
+		_pending_measurement_payloads.clear()
 		measurement_completed.emit(false, fallback_value)
+		return
+	if response_code == 422 and _pending_measurement_payloads.size() > 0:
+		print("[QuanticServer] Payload rechazado con 422, probando formato alternativo...")
+		_try_next_measurement_payload()
 		return
 	if response_code < 200 or response_code >= 300:
 		print("[QuanticServer] Código HTTP no válido: ", response_code, ". Usando fallback local.")
 		_pending_mode = ""
+		_pending_measurement_payloads.clear()
 		measurement_completed.emit(false, fallback_value)
 		return
 	var raw_text: String = body.get_string_from_utf8()
@@ -126,15 +166,18 @@ func _handle_measurement_response(result: int, response_code: int, body: PackedB
 	if typeof(parsed) != TYPE_DICTIONARY:
 		print("[QuanticServer] Respuesta no JSON/diccionario. Fallback local.")
 		_pending_mode = ""
+		_pending_measurement_payloads.clear()
 		measurement_completed.emit(false, fallback_value)
 		return
 	var measured_value: String = _extract_measurement_value(parsed)
 	if measured_value == "":
 		print("[QuanticServer] No se encontró medición en respuesta. Fallback local.")
 		_pending_mode = ""
+		_pending_measurement_payloads.clear()
 		measurement_completed.emit(false, fallback_value)
 		return
 	_pending_mode = ""
+	_pending_measurement_payloads.clear()
 	measurement_completed.emit(true, measured_value)
 
 func _extract_measurement_value(data: Dictionary) -> String:

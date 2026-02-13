@@ -138,8 +138,12 @@ func measure_unknown_token(index: int) -> String:
 		return _random_measurement()
 	if index < 0 or index >= CardSlotsRowArray.size():
 		return _random_measurement()
+	var input_token = TokenAreaAux.get_token_from_index(index)
+	var initial_bit: String = ""
+	if input_token:
+		initial_bit = str(input_token.get_value())
 	var operations = _build_operations_for_row(index)
-	QuanticServerAux.request_measurement(operations, "?")
+	QuanticServerAux.request_measurement(operations, initial_bit)
 	var response = await QuanticServerAux.measurement_completed
 	var success: bool = response[0]
 	var measured_value: String = response[1]
@@ -169,10 +173,6 @@ func _map_card_to_gate(card_name: String) -> String:
 		return "h"
 	if card_name == "X Gate":
 		return "x"
-	if card_name == "ControlledX":
-		return "cx"
-	if card_name == "Swap gate":
-		return "swap"
 	return ""
 
 func _random_measurement() -> String:

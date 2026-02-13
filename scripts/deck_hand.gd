@@ -15,6 +15,7 @@ extends Node2D
 @onready var BattleManagerAux: BattleManager = $Battle_Manager
 @onready var CardSpell2Scene: PackedScene = preload("res://scenes/cards/card_spell_heal.tscn")
 @onready var UIManager: CanvasLayer = $UIRoot
+@onready var TutorialTextLabel: Label = $CanvasLayer/TutorialPanel/TutorialText
 var PauseMenu: Control
 var DebugOverlay: Control
 var OutputCard: Card
@@ -25,6 +26,8 @@ var WORLD: String = "USUAL"
 var SetTokenArea:int = 1
 var IsGameOver: bool = false
 var IsMeasureSequenceRunning: bool = false
+var TutorialTypewriterRunId: int = 0
+var LastTutorialPhase: String = ""
 const MEASURE_FLIP_DURATION: float = 0.35
 const MEASURE_REVEAL_DELAY: float = 0.25
 
@@ -56,38 +59,77 @@ func _ready() -> void:
 		DebugOverlay.connect("requested_force_defeat", _on_debug_force_defeat_requested)
 	pass # Replace with function body.
 func visualize_elements(phase:String):
+	PHASE = phase
+	show_tutorial_for_phase(phase)
 	if(IsMeasureSequenceRunning):
 		hide_all_buttons()
 		PlayerHand.CanInteract = false
 		QuanticPlayerHand.CanInteract = false
 		return
-	if(PHASE=="USUAL_DRAW"):
+	if(phase=="USUAL_DRAW"):
 		hide_all_buttons()
 		$Button.visible = true
 		PlayerHand.CanInteract = false
 		$Button.set_process(true)
-	if(PHASE=="USUAL_PLAY"):
+	if(phase=="USUAL_PLAY"):
 		PlayerHand.CanInteract = true
 		hide_all_buttons()
-	if(PHASE=="QUANTIC_DRAW"):
+	if(phase=="QUANTIC_DRAW"):
 		QuanticPlayerHand.CanInteract = false
 		hide_all_buttons()
 		$Button3.visible = true
 		$Button3.set_process(true)
-	if(PHASE=="QUANTIC_PLAY"):
+	if(phase=="QUANTIC_PLAY"):
 		QuanticPlayerHand.CanInteract = true
 		hide_all_buttons()
 		$Button4.visible = true
 		$Button4.set_process(true)
-	if(PHASE=="QUANTIC_RESOLVE"):
+	if(phase=="QUANTIC_RESOLVE"):
 		hide_all_buttons()
 		$Button5.visible = true
 		$Button5.set_process(true)
-	if(PHASE == "QUANTIC_MEASURE"):
+	if(phase == "QUANTIC_MEASURE"):
 		hide_all_buttons()
 		$Button2.visible = true
 		$Button2.set_process(true)
 	pass
+
+func show_tutorial_for_phase(phase: String) -> void:
+	if(phase == LastTutorialPhase):
+		return
+	var tutorial_text: String = get_tutorial_text_for_phase(phase)
+	if(tutorial_text.is_empty()):
+		return
+	LastTutorialPhase = phase
+	start_tutorial_typewriter(tutorial_text)
+
+func get_tutorial_text_for_phase(phase: String) -> String:
+	if(phase == "USUAL_DRAW"):
+		return "Press the draw button."
+	if(phase == "USUAL_PLAY"):
+		return "Play your spell card to prepare the turn."
+	if(phase == "QUANTIC_DRAW"):
+		return "Draw a quantum gate card to continue."
+	if(phase == "QUANTIC_PLAY"):
+		return "Place the quantum gate on the board."
+	if(phase == "QUANTIC_RESOLVE"):
+		return "Resolve the board to generate the output qubits."
+	if(phase == "QUANTIC_MEASURE"):
+		return "Measure the result and apply your spell power."
+	return ""
+
+func start_tutorial_typewriter(full_text: String) -> void:
+	TutorialTypewriterRunId = TutorialTypewriterRunId + 1
+	var run_id = TutorialTypewriterRunId
+	TutorialTextLabel.text = ""
+	write_tutorial_text(run_id, full_text)
+
+func write_tutorial_text(run_id: int, full_text: String) -> void:
+	for i in full_text.length():
+		if(run_id != TutorialTypewriterRunId):
+			return
+		TutorialTextLabel.text = full_text.substr(0, i + 1)
+		await get_tree().create_timer(0.02).timeout
 
 func lock_all_player_input():
 	IsMeasureSequenceRunning = true

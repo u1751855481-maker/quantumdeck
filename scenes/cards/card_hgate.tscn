@@ -1,0 +1,25 @@
+[gd_scene load_steps=4 format=3 uid="uid://0yk0r4x87wxs"]
+
+[ext_resource type="Script" uid="uid://h7ddq5tltv51" path="res://scripts/card_2.gd" id="1_kx0ta"]
+[ext_resource type="PackedScene" uid="uid://da1ls8j6x744h" path="res://scenes/card.tscn" id="2_qn5eq"]
+[ext_resource type="Texture2D" uid="uid://tpsreybtp27x" path="res://Assets/H.png" id="3_qn5eq"]
+
+[node name="Card_HGate" type="Node2D"]
+script = ExtResource("1_kx0ta")
+
+[node name="Card" parent="." instance=ExtResource("2_qn5eq")]
+CardName = "H Gate"
+CardDescription = "Aplica el estado superpos"
+
+[node name="H" type="Sprite2D" parent="Card"]
+show_behind_parent = true
+z_index = 1
+position = Vector2(-1, -46)
+scale = Vector2(2, 2)
+texture = ExtResource("3_qn5eq")
+
+[connection signal="animation_ended" from="Card" to="." method="_on_card_animation_ended"]
+[connection signal="card_entered_slot" from="Card" to="." method="_on_card_card_entered_slot"]
+[connection signal="card_exited_slot" from="Card" to="." method="_on_card_card_exited_slot"]
+[connection signal="mouse_entered" from="Card" to="." method="_on_card_mouse_entered"]
+[connection signal="mouse_exited" from="Card" to="." method="_on_card_mouse_exited"]

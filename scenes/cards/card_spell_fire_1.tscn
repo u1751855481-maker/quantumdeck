@@ -1,0 +1,33 @@
+[gd_scene load_steps=5 format=3 uid="uid://cduxqrwkiy6le"]
+
+[ext_resource type="PackedScene" uid="uid://cobo1yesg2io0" path="res://scenes/card_spell.tscn" id="1_l3vbx"]
+[ext_resource type="Script" uid="uid://txvbfx5xtyf3" path="res://scripts/card_spell_fire_1.gd" id="1_o64v0"]
+[ext_resource type="Texture2D" uid="uid://d4eb0yq0obeu6" path="res://Assets/spritesheet.png" id="3_ndm2t"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b3bsl"]
+atlas = ExtResource("3_ndm2t")
+region = Rect2(113, 1, 14, 14)
+
+[node name="Card_Spell_fire_1" type="Node2D"]
+script = ExtResource("1_o64v0")
+TargetQubits = "111"
+CardName = "Fuego"
+CardDescription = "Ataque directo de 4"
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+show_behind_parent = true
+z_index = 1
+position = Vector2(-1.8749995, -37.125)
+scale = Vector2(10.160714, 8.303571)
+texture = SubResource("AtlasTexture_b3bsl")
+
+[node name="Card_Spell" parent="." instance=ExtResource("1_l3vbx")]
+TargetQubits = "111"
+CardName = "Fuego"
+CardDescription = "inflige hasta la mitad de salud del enemigo"
+
+[connection signal="animation_ended" from="Card_Spell" to="." method="_on_card_spell_animation_ended"]
+[connection signal="card_entered_slot" from="Card_Spell" to="." method="_on_card_spell_card_entered_slot"]
+[connection signal="card_exited_slot" from="Card_Spell" to="." method="_on_card_spell_card_exited_slot"]
+[connection signal="mouse_entered" from="Card_Spell" to="." method="_on_card_spell_mouse_entered"]
+[connection signal="mouse_exited" from="Card_Spell" to="." method="_on_card_spell_mouse_exited"]

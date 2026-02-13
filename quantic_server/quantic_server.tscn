@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://c0q5lttnny3ae"]
+
+[ext_resource type="Script" uid="uid://cemnmb5km6mbw" path="res://quantic_server/quantic_server.gd" id="1_dmik2"]
+
+[node name="Quantic_Server" type="Node2D"]
+script = ExtResource("1_dmik2")
+
+[node name="ConectorCuantico" type="HTTPRequest" parent="."]
+
+[connection signal="request_completed" from="ConectorCuantico" to="." method="_al_recibir_respuesta"]

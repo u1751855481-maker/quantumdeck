@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://blyyd4tuf3u51"]
+
+[ext_resource type="Script" uid="uid://dqabiut1s83ia" path="res://scripts/token_area.gd" id="1_on3he"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_on3he"]
+size = Vector2(103, 999.5)
+
+[node name="Token_Area" type="Node2D"]
+script = ExtResource("1_on3he")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(152, 555.25)
+shape = SubResource("RectangleShape2D_on3he")

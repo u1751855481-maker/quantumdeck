@@ -1,0 +1,25 @@
+[gd_scene load_steps=4 format=3 uid="uid://dalloj31g2r8e"]
+
+[ext_resource type="Script" uid="uid://chcxe8fij5wmn" path="res://scripts/card_1.gd" id="1_1gmxu"]
+[ext_resource type="PackedScene" uid="uid://da1ls8j6x744h" path="res://scenes/card.tscn" id="2_jdtk5"]
+[ext_resource type="Texture2D" uid="uid://cq0ufn474kxv3" path="res://Assets/X.png" id="3_jdtk5"]
+
+[node name="Card_XGate" type="Node2D"]
+script = ExtResource("1_1gmxu")
+
+[node name="Card" parent="." instance=ExtResource("2_jdtk5")]
+CardName = "X Gate"
+CardDescription = "Invierte valor de un Qubit"
+
+[node name="X" type="Sprite2D" parent="Card"]
+show_behind_parent = true
+z_index = 1
+position = Vector2(3, -47)
+scale = Vector2(2, 2)
+texture = ExtResource("3_jdtk5")
+
+[connection signal="animation_ended" from="Card" to="." method="_on_card_animation_ended"]
+[connection signal="card_entered_slot" from="Card" to="." method="_on_card_card_entered_slot"]
+[connection signal="card_exited_slot" from="Card" to="." method="_on_card_card_exited_slot"]
+[connection signal="mouse_entered" from="Card" to="." method="_on_card_mouse_entered"]
+[connection signal="mouse_exited" from="Card" to="." method="_on_card_mouse_exited"]

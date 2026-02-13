@@ -1,0 +1,255 @@
+[gd_scene load_steps=9 format=3 uid="uid://cbec7n612menu"]
+
+[ext_resource type="Script" uid="uid://u6eqcvkytbi0" path="res://scripts/main_menu.gd" id="1_menu"]
+[ext_resource type="Texture2D" uid="uid://dgx18w6jbar08" path="res://Assets/Background.png" id="2_wu84c"]
+[ext_resource type="AudioStream" uid="uid://dvbv6lxdgam83" path="res://Assets/sfx/click.mp3" id="3_bqqt6"]
+[ext_resource type="Script" uid="uid://bpfiue734ccdv" path="res://scripts/main_menu_particles.gd" id="4_particles"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_normal"]
+bg_color = Color(0.0784314, 0.101961, 0.2, 0.82)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.352941, 0.658824, 1, 0.9)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+shadow_color = Color(0, 0, 0, 0.35)
+shadow_size = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_pressed"]
+bg_color = Color(0.0666667, 0.0901961, 0.176471, 0.95)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.415686, 0.784314, 1, 1)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_hover"]
+bg_color = Color(0.145098, 0.2, 0.380392, 0.95)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.607843, 0.878431, 1, 1)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+shadow_color = Color(0, 0, 0, 0.4)
+shadow_size = 6
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_bqqt6"]
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_menu")
+
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_wu84c")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="ParticlesLayer" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("4_particles")
+
+[node name="MenuCenter" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MenuVBox" type="VBoxContainer" parent="MenuCenter"]
+layout_mode = 2
+theme_override_constants/separation = 24
+
+[node name="StartButton" type="Button" parent="MenuCenter/MenuVBox"]
+custom_minimum_size = Vector2(480, 72)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.94902, 0.980392, 1, 1)
+theme_override_colors/font_pressed_color = Color(0.85098, 0.941176, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_normal")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
+text = "Iniciar juego"
+
+[node name="CreditsButton" type="Button" parent="MenuCenter/MenuVBox"]
+custom_minimum_size = Vector2(480, 72)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.94902, 0.980392, 1, 1)
+theme_override_colors/font_pressed_color = Color(0.85098, 0.941176, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_normal")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
+text = "Créditos"
+
+[node name="HistoryButton" type="Button" parent="MenuCenter/MenuVBox"]
+custom_minimum_size = Vector2(480, 72)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.94902, 0.980392, 1, 1)
+theme_override_colors/font_pressed_color = Color(0.85098, 0.941176, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_normal")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
+text = "Historia"
+
+[node name="ExitButton" type="Button" parent="MenuCenter/MenuVBox"]
+custom_minimum_size = Vector2(480, 72)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.94902, 0.980392, 1, 1)
+theme_override_colors/font_pressed_color = Color(0.85098, 0.941176, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_normal")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
+text = "Salir"
+
+[node name="CreditsPanel" type="PanelContainer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.15
+anchor_top = 0.1
+anchor_right = 0.85
+anchor_bottom = 0.9
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Overlay" type="ColorRect" parent="CreditsPanel"]
+layout_mode = 2
+color = Color(0.08, 0.08, 0.1, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="CreditsPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="CreditsVBox" type="VBoxContainer" parent="CreditsPanel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="Title" type="Label" parent="CreditsPanel/MarginContainer/CreditsVBox"]
+layout_mode = 2
+text = "Créditos"
+horizontal_alignment = 1
+
+[node name="GameplaySection" type="VBoxContainer" parent="CreditsPanel/MarginContainer/CreditsVBox"]
+layout_mode = 2
+
+[node name="Category" type="Label" parent="CreditsPanel/MarginContainer/CreditsVBox/GameplaySection"]
+layout_mode = 2
+text = "Diseño de gameplay"
+horizontal_alignment = 1
+
+[node name="Names" type="Label" parent="CreditsPanel/MarginContainer/CreditsVBox/GameplaySection"]
+layout_mode = 2
+text = "Integrante Gameplay"
+horizontal_alignment = 1
+
+[node name="QiskitSection" type="VBoxContainer" parent="CreditsPanel/MarginContainer/CreditsVBox"]
+layout_mode = 2
+
+[node name="Category" type="Label" parent="CreditsPanel/MarginContainer/CreditsVBox/QiskitSection"]
+layout_mode = 2
+text = "Desarrollo de servidor quiskit"
+horizontal_alignment = 1
+
+[node name="Names" type="Label" parent="CreditsPanel/MarginContainer/CreditsVBox/QiskitSection"]
+layout_mode = 2
+text = "Integrante Qiskit"
+horizontal_alignment = 1
+
+[node name="MenuSection" type="VBoxContainer" parent="CreditsPanel/MarginContainer/CreditsVBox"]
+layout_mode = 2
+
+[node name="Category" type="Label" parent="CreditsPanel/MarginContainer/CreditsVBox/MenuSection"]
+layout_mode = 2
+text = "Diseño artístico y musical"
+horizontal_alignment = 1
+
+[node name="Names" type="Label" parent="CreditsPanel/MarginContainer/CreditsVBox/MenuSection"]
+layout_mode = 2
+text = "Integrante Menús"
+horizontal_alignment = 1
+
+[node name="CodeSection" type="VBoxContainer" parent="CreditsPanel/MarginContainer/CreditsVBox"]
+layout_mode = 2
+
+[node name="Category" type="Label" parent="CreditsPanel/MarginContainer/CreditsVBox/CodeSection"]
+layout_mode = 2
+text = "Desarrollo del código"
+horizontal_alignment = 1
+
+[node name="Names" type="Label" parent="CreditsPanel/MarginContainer/CreditsVBox/CodeSection"]
+layout_mode = 2
+text = "Integrante Código"
+horizontal_alignment = 1
+
+[node name="BackButton" type="Button" parent="CreditsPanel/MarginContainer/CreditsVBox"]
+layout_mode = 2
+size_flags_vertical = 10
+theme_override_colors/font_color = Color(0.94902, 0.980392, 1, 1)
+theme_override_colors/font_pressed_color = Color(0.85098, 0.941176, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 26
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_normal")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_btn_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
+text = "Volver"
+
+[node name="Quantumdeck" type="Sprite2D" parent="CreditsPanel/MarginContainer/CreditsVBox"]
+position = Vector2(382, 295)
+texture = SubResource("CompressedTexture2D_bqqt6")
+
+[node name="SFX" type="Node2D" parent="."]
+position = Vector2(720, 408)
+
+[node name="Hover" type="AudioStreamPlayer2D" parent="SFX"]
+stream = ExtResource("3_bqqt6")
+
+[connection signal="mouse_entered" from="MenuCenter/MenuVBox/StartButton" to="." method="_on_start_button_mouse_entered"]
+[connection signal="pressed" from="MenuCenter/MenuVBox/StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="mouse_entered" from="MenuCenter/MenuVBox/CreditsButton" to="." method="_on_credits_button_mouse_entered"]
+[connection signal="pressed" from="MenuCenter/MenuVBox/CreditsButton" to="." method="_on_credits_button_pressed"]
+[connection signal="mouse_entered" from="MenuCenter/MenuVBox/HistoryButton" to="." method="_on_history_button_mouse_entered"]
+[connection signal="pressed" from="MenuCenter/MenuVBox/HistoryButton" to="." method="_on_history_button_pressed"]
+[connection signal="mouse_entered" from="MenuCenter/MenuVBox/ExitButton" to="." method="_on_exit_button_mouse_entered"]
+[connection signal="pressed" from="MenuCenter/MenuVBox/ExitButton" to="." method="_on_exit_button_pressed"]
+[connection signal="mouse_entered" from="CreditsPanel/MarginContainer/CreditsVBox/BackButton" to="." method="_on_back_button_mouse_entered"]
+[connection signal="pressed" from="CreditsPanel/MarginContainer/CreditsVBox/BackButton" to="." method="_on_back_button_pressed"]

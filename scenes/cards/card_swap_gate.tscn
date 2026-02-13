@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://cxxkikpfh8cnj"]
+
+[ext_resource type="PackedScene" uid="uid://da1ls8j6x744h" path="res://scenes/card.tscn" id="1_c4n7v"]
+[ext_resource type="Script" uid="uid://cfrnggsjpjrun" path="res://scripts/card_swap_gate.gd" id="1_uuv8p"]
+
+[node name="Card_Swap_Gate" type="Node2D"]
+script = ExtResource("1_uuv8p")
+
+[node name="Card" parent="." instance=ExtResource("1_c4n7v")]
+CardName = "Swap gate"
+CardDescription = "Intercambia los valores de qubits"
+
+[connection signal="animation_ended" from="Card" to="." method="_on_card_animation_ended"]
+[connection signal="card_entered_slot" from="Card" to="." method="_on_card_card_entered_slot"]
+[connection signal="card_exited_slot" from="Card" to="." method="_on_card_card_exited_slot"]
+[connection signal="mouse_entered" from="Card" to="." method="_on_card_mouse_entered"]
+[connection signal="mouse_exited" from="Card" to="." method="_on_card_mouse_exited"]

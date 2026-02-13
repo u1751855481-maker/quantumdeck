@@ -1,0 +1,52 @@
+[gd_scene load_steps=4 format=3 uid="uid://bwxdfc3drx6wm"]
+
+[ext_resource type="Script" uid="uid://dfif8e8o4k2wb" path="res://scripts/story_page.gd" id="1_page"]
+[ext_resource type="Texture2D" uid="uid://bsib8763wqkw3" path="res://Assets/intro4.png" id="2_tikqg"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_tikqg"]
+font_size = 20
+
+[node name="StoryPage4" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_page")
+StoryText = "El científico apenas tuvo tiempo de respirar.
+El vórtice lo arrastró.
+Y el CESGA quedó atrás.
+Muy atrás.
+En otra dimensión…"
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 180
+theme_override_constants/margin_top = 120
+theme_override_constants/margin_right = 180
+theme_override_constants/margin_bottom = 120
+
+[node name="VBox" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 30
+
+[node name="Image" type="TextureRect" parent="MarginContainer/VBox"]
+custom_minimum_size = Vector2(420, 220)
+layout_mode = 2
+size_flags_horizontal = 4
+texture = ExtResource("2_tikqg")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TextLabel" type="Label" parent="MarginContainer/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 36
+label_settings = SubResource("LabelSettings_tikqg")
+horizontal_alignment = 1
+autowrap_mode = 2

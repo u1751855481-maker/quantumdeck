@@ -1,0 +1,12 @@
+# Godot 4 - generated files
+.godot/
+
+# Export presets can be committed if you want; if not:
+# export_presets.cfg
+
+# OS / Editor junk
+.DS_Store
+Thumbs.db
+
+# Logs / temp
+*.log

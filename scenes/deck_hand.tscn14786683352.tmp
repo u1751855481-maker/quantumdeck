@@ -1,0 +1,65 @@
+[gd_scene load_steps=7 format=3 uid="uid://dvmafqbag38bf"]
+
+[ext_resource type="Script" uid="uid://dp0i007rk2d8" path="res://scripts/deck_hand.gd" id="1_brxfj"]
+[ext_resource type="PackedScene" uid="uid://cyd45ay7r1wy7" path="res://scenes/hand.tscn" id="2_ojtlx"]
+[ext_resource type="PackedScene" uid="uid://blyyd4tuf3u51" path="res://scenes/token_area.tscn" id="3_m3f7a"]
+[ext_resource type="PackedScene" uid="uid://duginqd6vrix2" path="res://scenes/card_slot.tscn" id="4_s1lvx"]
+[ext_resource type="PackedScene" uid="uid://ojcqpnh2bm10" path="res://scenes/card_slots_row.tscn" id="5_03le4"]
+[ext_resource type="PackedScene" uid="uid://cl2ryl7uujfgn" path="res://scenes/board.tscn" id="6_npc56"]
+
+[node name="Deck_Hand" type="Node2D"]
+script = ExtResource("1_brxfj")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Hand" parent="CanvasLayer" instance=ExtResource("2_ojtlx")]
+position = Vector2(960, 1839)
+AngleLimit = 20.0
+
+[node name="Token_Area" parent="CanvasLayer" instance=ExtResource("3_m3f7a")]
+position = Vector2(128, 80)
+
+[node name="Card_Slot" parent="CanvasLayer" instance=ExtResource("4_s1lvx")]
+position = Vector2(697, 247)
+
+[node name="Card_slots_row" parent="CanvasLayer" instance=ExtResource("5_03le4")]
+position = Vector2(697, 248)
+
+[node name="Board" parent="CanvasLayer" instance=ExtResource("6_npc56")]
+
+[node name="Button" type="Button" parent="."]
+offset_left = 10.0
+offset_top = 11.0
+offset_right = 68.0
+offset_bottom = 42.0
+text = "Card 1"
+
+[node name="Button2" type="Button" parent="."]
+offset_left = 10.0
+offset_top = 45.0
+offset_right = 68.0
+offset_bottom = 76.0
+text = "Card 2"
+
+[node name="Button3" type="Button" parent="."]
+offset_left = 12.0
+offset_top = 80.0
+offset_right = 103.0
+offset_bottom = 111.0
+text = "Add Token"
+
+[node name="Button4" type="Button" parent="."]
+offset_left = 14.0
+offset_top = 116.0
+offset_right = 109.0
+offset_bottom = 147.0
+text = "Randomize"
+
+[connection signal="card_entered_slot" from="CanvasLayer/Hand" to="." method="_on_hand_card_entered_slot"]
+[connection signal="card_exited_slot" from="CanvasLayer/Hand" to="." method="_on_hand_card_exited_slot"]
+[connection signal="click_card" from="CanvasLayer/Hand" to="." method="_on_hand_click_card"]
+[connection signal="release_card" from="CanvasLayer/Hand" to="." method="_on_hand_release_card"]
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="Button2" to="." method="_on_button_2_pressed"]
+[connection signal="pressed" from="Button3" to="." method="_on_button_3_pressed"]
+[connection signal="pressed" from="Button4" to="." method="_on_button_4_pressed"]

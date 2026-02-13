@@ -1,0 +1,50 @@
+[gd_scene load_steps=7 format=3 uid="uid://cobo1yesg2io0"]
+
+[ext_resource type="Script" uid="uid://c6yx08fhmwmi7" path="res://scripts/card_spell.gd" id="1_xl1mf"]
+[ext_resource type="PackedScene" uid="uid://da1ls8j6x744h" path="res://scenes/card.tscn" id="2_8bpp1"]
+[ext_resource type="Texture2D" uid="uid://fk64d6vbje7f" path="res://Assets/card_sheet.png" id="3_l6las"]
+[ext_resource type="FontFile" uid="uid://bdvuker3x5jgx" path="res://Assets/minami.ttf" id="4_e114y"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l6las"]
+atlas = ExtResource("3_l6las")
+region = Rect2(623, 211, 10, 31)
+
+[sub_resource type="LabelSettings" id="LabelSettings_7h03t"]
+font = ExtResource("4_e114y")
+font_size = 20
+font_color = Color(0.06879827, 0.06879828, 0.06879828, 1)
+
+[node name="Card_Spell" type="Node2D"]
+script = ExtResource("1_xl1mf")
+TargetQubits = "1111"
+
+[node name="Card" parent="." instance=ExtResource("2_8bpp1")]
+position = Vector2(1, 1.0000038)
+
+[node name="Target_value" type="Sprite2D" parent="."]
+z_index = 1
+position = Vector2(-93, -33)
+scale = Vector2(3.7, 3.6999998)
+texture = SubResource("AtlasTexture_l6las")
+
+[node name="Target_value_text" type="Label" parent="."]
+z_index = 1
+anchors_preset = -1
+anchor_left = -7.7
+anchor_right = -7.7
+anchor_bottom = 0.69145316
+offset_left = -100.0
+offset_top = -79.0
+offset_right = -74.0
+offset_bottom = 13.0
+text = "1111"
+label_settings = SubResource("LabelSettings_7h03t")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 1
+
+[connection signal="animation_ended" from="Card" to="." method="_on_card_animation_ended"]
+[connection signal="card_entered_slot" from="Card" to="." method="_on_card_card_entered_slot"]
+[connection signal="card_exited_slot" from="Card" to="." method="_on_card_card_exited_slot"]
+[connection signal="mouse_entered" from="Card" to="." method="_on_card_mouse_entered"]
+[connection signal="mouse_exited" from="Card" to="." method="_on_card_mouse_exited"]

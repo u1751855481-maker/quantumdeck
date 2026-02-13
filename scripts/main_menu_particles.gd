@@ -1,13 +1,14 @@
 extends Control
-
 @export var SpawnInterval: float = 0.2
 @export var ParticleLifetime: float = 3.0
 @export var MaxParticles: int = 45
+@export var ParticleSize: float = 4.0
 
 var ParticleTextures: Array[Texture2D] = [
-	preload("res://Assets/qubit.png"),
-	preload("res://Assets/slot.png"),
-	preload("res://Assets/H.png")
+	preload("res://Assets/particle1.png"),
+	preload("res://Assets/particle2.png"),
+	preload("res://Assets/particle3.png"),
+	preload("res://Assets/particle4.png")
 ]
 
 var Running: bool = true
@@ -30,7 +31,7 @@ func spawn_particle() -> void:
 	p.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	p.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	p.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	var particle_size := randf_range(20.0, 64.0)
+	var particle_size := randf_range(20.0, 64.0) * ParticleSize
 	p.custom_minimum_size = Vector2(particle_size, particle_size)
 	var viewport_size := get_viewport_rect().size
 	p.position = Vector2(randf_range(0.0, max(0.0, viewport_size.x - particle_size)), randf_range(0.0, max(0.0, viewport_size.y - particle_size)))

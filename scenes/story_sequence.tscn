@@ -1,6 +1,6 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=2 format=3 uid="uid://b3rh6gm05tbqf"]
 
-[ext_resource type="Script" path="res://scripts/story_sequence.gd" id="1_storyseq"]
+[ext_resource type="Script" uid="uid://dnjgsxckpldgf" path="res://scripts/story_sequence.gd" id="1_storyseq"]
 
 [node name="StorySequence" type="Control"]
 layout_mode = 3

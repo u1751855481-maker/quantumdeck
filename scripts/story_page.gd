@@ -2,7 +2,7 @@ extends Control
 
 signal page_finished
 
-@export var StoryText: String = ""
+@export_multiline var StoryText: String = ""
 @export var TypingSpeed: float = 0.03
 @export var HoldDuration: float = 4.0
 

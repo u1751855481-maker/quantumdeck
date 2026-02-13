@@ -1,24 +1,27 @@
-[gd_scene load_steps=4 format=3 uid="uid://bwxdfc3drx6wm"]
+[gd_scene load_steps=4 format=3 uid="uid://b00kqak0bo2e0"]
 
-[ext_resource type="Script" uid="uid://dfif8e8o4k2wb" path="res://scripts/story_page.gd" id="1_page"]
-[ext_resource type="Texture2D" uid="uid://bsib8763wqkw3" path="res://Assets/intro4.png" id="2_tikqg"]
+[ext_resource type="Script" uid="uid://dfif8e8o4k2wb" path="res://scripts/story_page.gd" id="1_4eng6"]
+[ext_resource type="Texture2D" uid="uid://b4y7e5cik6m24" path="res://Assets/imageend.png" id="2_4eng6"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_tikqg"]
 font_size = 20
 
-[node name="StoryPage4" type="Control"]
+[node name="StoryPageEnd" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_page")
-StoryText = "El científico apenas tuvo tiempo de respirar.
-El vórtice lo arrastró.
-Y el CESGA quedó atrás.
-Muy atrás.
-En otra dimensión…"
+script = ExtResource("1_4eng6")
+StoryText = "“El portal te trajo… y con él llegaron las bestias cuánticas”, dijo el habitante.
+“Esto es magia. Aquí la realidad se escribe con runas.”
+Luego sacó una baraja de cartas y se la entregó.
+“La profecía habla del visitante que caerá del rayo imposible.”
+“El que podrá controlar lo inestable… y liberarnos.”
+El científico miró las cartas.
+A lo lejos, más vórtices comenzaron a formarse...
+\"Es tu misión acabar con estas bestias y devolver la estabilidad a nuestro mundo\""
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -40,7 +43,7 @@ theme_override_constants/separation = 30
 custom_minimum_size = Vector2(420, 220)
 layout_mode = 2
 size_flags_horizontal = 4
-texture = ExtResource("2_tikqg")
+texture = ExtResource("2_4eng6")
 expand_mode = 1
 stretch_mode = 5
 

@@ -9,7 +9,9 @@ var StoryPages: Array[PackedScene] = [
 	preload("res://scenes/story_page_1.tscn"),
 	preload("res://scenes/story_page_2.tscn"),
 	preload("res://scenes/story_page_3.tscn"),
-	preload("res://scenes/story_page_4.tscn")
+	preload("res://scenes/story_page_4.tscn"),
+	preload("res://scenes/story_page_5.tscn"),
+	preload("res://scenes/story_page_end.tscn")
 ]
 
 func _ready() -> void:

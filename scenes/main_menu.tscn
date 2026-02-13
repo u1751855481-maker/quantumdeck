@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://cbec7n612menu"]
 
 [ext_resource type="Script" uid="uid://u6eqcvkytbi0" path="res://scripts/main_menu.gd" id="1_menu"]
-[ext_resource type="Texture2D" uid="uid://2gcjqmqolnac" path="res://Assets/bg.png" id="2_bg"]
+[ext_resource type="Texture2D" uid="uid://dgx18w6jbar08" path="res://Assets/Background.png" id="2_wu84c"]
 [ext_resource type="AudioStream" uid="uid://dvbv6lxdgam83" path="res://Assets/sfx/click.mp3" id="3_bqqt6"]
 [ext_resource type="Script" uid="uid://bpfiue734ccdv" path="res://scripts/main_menu_particles.gd" id="4_particles"]
 
@@ -23,7 +23,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("2_bg")
+texture = ExtResource("2_wu84c")
 expand_mode = 1
 stretch_mode = 6
 

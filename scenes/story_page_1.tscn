@@ -14,7 +14,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_page")
-StoryText = "Año 20XX, edificio del CESGA. Un científico estudiaba la computación cuántica en silencio.Día tras día, medía estados, revisaba resultados… y todo parecía estable."
+StoryText = "Año 20XX, edificio del CESGA.\nUn científico estudiaba la computación cuántica en silencio.\nDía tras día, medía estados, revisaba resultados…\ny todo parecía estable."
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1

@@ -10,6 +10,7 @@ signal click_slot(slot:CardSlot)
 @onready var ResultAreaAux: ResultArea = ResultAreaScene.instantiate()
 @onready var TokenAreaAux: TokenArea = TokenAreaScene.instantiate()
 var QuanticServerAux: QuanticServer
+var server_available: bool = false
 
 var CardSlotsRowNum = 3
 var CardSlotsRowArray: Array = []
@@ -18,6 +19,8 @@ var CardSlotsRowArray: Array = []
 func _ready():
 	QuanticServerAux = QuanticServerScene.instantiate()
 	add_child(QuanticServerAux)
+	QuanticServerAux.wakeup_completed.connect(_on_server_wakeup_completed)
+	QuanticServerAux.wake_up_server()
 	add_child(TokenAreaAux)
 	add_child(ResultAreaAux)
 
@@ -40,6 +43,13 @@ func get_result_area() -> ResultArea:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	pass
+
+func _on_server_wakeup_completed(available: bool) -> void:
+	server_available = available
+	if server_available:
+		print("[Board] Servidor cuántico disponible tras wake-up.")
+	else:
+		print("[Board] Wake-up fallido. Se usará fallback local.")
 	
 func resolve_row(index:int):
 	if(TokenAreaAux.get_token_from_index(index)):
@@ -121,3 +131,51 @@ func get_result():
 		var token = ResultAreaAux.get_token_from_index(i)
 		res.push_back(token.get_value())
 	return res
+
+func measure_unknown_token(index: int) -> String:
+	if !server_available:
+		print("[Board] Medición local por wake-up fallido (fila %d)." % index)
+		return _random_measurement()
+	if index < 0 or index >= CardSlotsRowArray.size():
+		return _random_measurement()
+	var operations = _build_operations_for_row(index)
+	QuanticServerAux.request_measurement(operations, "?")
+	var response = await QuanticServerAux.measurement_completed
+	var success: bool = response[0]
+	var measured_value: String = response[1]
+	if !success:
+		print("[Board] Medición remota fallida, fallback local (fila %d)." % index)
+		return _random_measurement()
+	return measured_value
+
+func _build_operations_for_row(index: int) -> Array:
+	var operations: Array = []
+	var row = CardSlotsRowArray[index]
+	for slot in row.get_slots():
+		var card = slot.get_card_inside()
+		if card == null:
+			continue
+		var gate_name: String = _map_card_to_gate(card.get_card_name())
+		if gate_name == "":
+			continue
+		operations.push_back({
+			"gate": gate_name,
+			"targets": [0]
+		})
+	return operations
+
+func _map_card_to_gate(card_name: String) -> String:
+	if card_name == "H Gate":
+		return "h"
+	if card_name == "X Gate":
+		return "x"
+	if card_name == "ControlledX":
+		return "cx"
+	if card_name == "Swap gate":
+		return "swap"
+	return ""
+
+func _random_measurement() -> String:
+	if randi_range(0, 1) == 1:
+		return "1"
+	return "0"

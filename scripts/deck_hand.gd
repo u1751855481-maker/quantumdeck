@@ -179,13 +179,12 @@ func measure_result_tokens_with_flip() -> void:
 	for i in QuanticPlayerBoard.get_result().size():
 		var token = result_area.get_token_from_index(i)
 		if(token && token.get_value() == "?"):
-			var measured_value = "0"
-			if(randi_range(0,1)==1):
-				measured_value = "1"
+			var measured_value: String = await QuanticPlayerBoard.measure_unknown_token(i)
 			var flip_tween = token.play_flip_to_value(measured_value, MEASURE_FLIP_DURATION)
 			if(flip_tween):
 				flip_tweens.push_back(flip_tween)
-	play_sfx_token_flip()
+	if(flip_tweens.size() > 0):
+		play_sfx_token_flip()
 	for tween in flip_tweens:
 		await tween.finished
 	if(flip_tweens.size() > 0):

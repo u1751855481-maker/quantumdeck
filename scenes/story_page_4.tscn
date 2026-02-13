@@ -11,7 +11,11 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_page")
-StoryText = "El científico apenas tuvo tiempo de respirar.El vórtice lo arrastró.Y el CESGA quedó atrás.Muy atrás.En otra dimensión…"
+StoryText = "El científico apenas tuvo tiempo de respirar.
+El vórtice lo arrastró.
+Y el CESGA quedó atrás.
+Muy atrás.
+En otra dimensión…"
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1

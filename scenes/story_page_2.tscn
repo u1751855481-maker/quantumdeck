@@ -14,7 +14,13 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_page")
-StoryText = "Hasta que, una noche, algo cambió.En la pantalla apareció una fluctuaciónAl principio fue un pico pequeño.Luego otro.Y otro más.Las gráficas empezaron a temblar, como si la realidad dudara.El científico intentó recalibrar."
+StoryText = "Hasta que, una noche, algo cambió.
+En la pantalla apareció una fluctuación.
+Al principio fue un pico pequeño.
+Luego otro.
+Y otro más.
+Las gráficas empezaron a temblar, como si la realidad dudara.
+El científico intentó recalibrar."
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1

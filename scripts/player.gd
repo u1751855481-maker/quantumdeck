@@ -10,16 +10,16 @@ signal player_attacked
 var FlashMaterial: ShaderMaterial
 
 func _ready() -> void:
-	setup_white_flash_material()
+	#setup_white_flash_material()
 	PlayerSprite.play("idle")
 
-func setup_white_flash_material() -> void:
-	var flash_shader := load("res://shaders/white_flash.gdshader") as Shader
-	if(flash_shader == null):
-		return
-	FlashMaterial = ShaderMaterial.new()
-	FlashMaterial.shader = flash_shader
-	PlayerSprite.material = FlashMaterial
+#func setup_white_flash_material() -> void:
+	#var flash_shader := load("res://shaders/white_flash.gdshader") as Shader
+	#if(flash_shader == null):
+	#	return
+	#FlashMaterial = ShaderMaterial.new()
+	#FlashMaterial.shader = flash_shader
+	#PlayerSprite.material = FlashMaterial
 
 func play_attack_anim():
 	PlayerSprite.play("attack")

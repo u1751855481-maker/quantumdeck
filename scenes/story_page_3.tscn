@@ -1,7 +1,10 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=4 format=3 uid="uid://ci1iswv4duta4"]
 
-[ext_resource type="Script" path="res://scripts/story_page.gd" id="1_page"]
-[ext_resource type="Texture2D" path="res://Assets/Layer5.png" id="2_img"]
+[ext_resource type="Script" uid="uid://dfif8e8o4k2wb" path="res://scripts/story_page.gd" id="1_page"]
+[ext_resource type="Texture2D" uid="uid://coki8gufq441i" path="res://Assets/intro3.png" id="2_rkphf"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_rkphf"]
+font_size = 20
 
 [node name="StoryPage3" type="Control"]
 layout_mode = 3
@@ -11,7 +14,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_page")
-StoryText = "Cada enemigo caído revela nuevos patrones ocultos en el campo de batalla."
+StoryText = "Entonces, el ordenador cuántico emitió un zumbido profundo.Las luces parpadearon.El aire se volvió pesado.Y, en un instante…Todo estalló.Entre chispas y ruido, se abrió un vórtice imposible."
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -33,12 +36,13 @@ theme_override_constants/separation = 30
 custom_minimum_size = Vector2(420, 220)
 layout_mode = 2
 size_flags_horizontal = 4
-texture = ExtResource("2_img")
+texture = ExtResource("2_rkphf")
 expand_mode = 1
 stretch_mode = 5
 
 [node name="TextLabel" type="Label" parent="MarginContainer/VBox"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 36
-autowrap_mode = 2
+label_settings = SubResource("LabelSettings_rkphf")
 horizontal_alignment = 1
+autowrap_mode = 2

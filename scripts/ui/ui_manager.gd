@@ -5,7 +5,6 @@ extends CanvasLayer
 
 var MenuRegistry: Dictionary = {
 	"pause_menu": preload("res://scenes/pause_menu.tscn"),
-	"combat_log_panel": preload("res://scenes/ui/combat_log_panel.tscn"),
 	"debug_overlay": preload("res://scenes/ui/debug_overlay.tscn")
 }
 

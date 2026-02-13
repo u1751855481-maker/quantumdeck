@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://u6eqcvkytbi0" path="res://scripts/main_menu.gd" id="1_menu"]
 [ext_resource type="Texture2D" uid="uid://2gcjqmqolnac" path="res://Assets/bg.png" id="2_bg"]
 [ext_resource type="AudioStream" uid="uid://dvbv6lxdgam83" path="res://Assets/sfx/click.mp3" id="3_bqqt6"]
-[ext_resource type="Script" path="res://scripts/main_menu_particles.gd" id="4_particles"]
+[ext_resource type="Script" uid="uid://bpfiue734ccdv" path="res://scripts/main_menu_particles.gd" id="4_particles"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_bqqt6"]
 
@@ -52,7 +52,7 @@ text = "Créditos"
 [node name="HistoryButton" type="Button" parent="MenuCenter/MenuVBox"]
 custom_minimum_size = Vector2(480, 72)
 layout_mode = 2
-text = "HISTORIA"
+text = "Historia"
 
 [node name="ExitButton" type="Button" parent="MenuCenter/MenuVBox"]
 custom_minimum_size = Vector2(480, 72)
@@ -151,7 +151,6 @@ text = "Volver"
 [node name="Quantumdeck" type="Sprite2D" parent="CreditsPanel/MarginContainer/CreditsVBox"]
 position = Vector2(382, 295)
 texture = SubResource("CompressedTexture2D_bqqt6")
-
 
 [node name="ParticlesLayer" type="Control" parent="."]
 layout_mode = 1

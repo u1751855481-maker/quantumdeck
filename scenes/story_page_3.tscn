@@ -14,7 +14,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_page")
-StoryText = "Entonces, el ordenador cuántico emitió un zumbido profundo.Las luces parpadearon.El aire se volvió pesado.Y, en un instante…Todo estalló.Entre chispas y ruido, se abrió un vórtice imposible."
+StoryText = "Entonces, el ordenador cuántico emitió un zumbido profundo.\nLas luces parpadearon.\nEl aire se volvió pesado.\nY, en un instante…\nTodo estalló.\nEntre chispas y ruido,\nse abrió un vórtice imposible."
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1

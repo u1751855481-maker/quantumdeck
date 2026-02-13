@@ -15,6 +15,7 @@ func _ready() -> void:
 	GameState.set_state(GameState.State.MENU)
 	CreditsPanel.visible = false
 	update_credits_labels()
+	AudioSettings.play_menu_music()
 
 func update_credits_labels() -> void:
 	GameplayNamesLabel.text = "\n".join(GameplayDesignNames)

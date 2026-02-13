@@ -36,6 +36,7 @@ var FirstDraw: int = 1
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	AudioSettings.play_battle_music()
 	PlayerHand.add_card(CardSpell1Scene.instantiate())
 	play_sfx_draw_card()
 	QuanticPlayerHand.add_card(Card1Scene.instantiate())
@@ -445,10 +446,7 @@ func _on_restart_button_pressed():
 	get_tree().paused = false
 	if(PauseMenu):
 		PauseMenu.set_pause_enabled(false)
-	if(UIManager):
-		await UIManager.transition_to_scene("res://scenes/main_menu.tscn")
-	else:
-		get_tree().change_scene_to_file("res://scenes/main_menu.tscn")
+	await exit_battle_to_main_menu()
 
 func play_sfx_draw_card() -> void:
 	$SFX/Draw.play()
@@ -487,6 +485,11 @@ func play_sfx_splat():
 
 func _on_pause_menu_exit_to_menu_requested() -> void:
 	GameState.set_state(GameState.State.MENU)
+	await exit_battle_to_main_menu()
+
+func exit_battle_to_main_menu() -> void:
+	AudioSettings.stop_music()
+	await get_tree().create_timer(AudioSettings.MUSIC_FADE_SECONDS).timeout
 	if(UIManager):
 		await UIManager.transition_to_scene("res://scenes/main_menu.tscn")
 	else:
